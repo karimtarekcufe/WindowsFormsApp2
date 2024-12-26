@@ -27,6 +27,7 @@ CREATE TABLE Customers (
     Address TEXT,
     PaymentID INT,
     Budget DECIMAL(10, 2) NOT NULL DEFAULT 0,
+    Telephone INT  NOT NULL,
     FOREIGN KEY (ID) REFERENCES UserData(ID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (PaymentID) REFERENCES Payment(ID) ON DELETE SET NULL ON UPDATE NO ACTION
 );
@@ -173,11 +174,11 @@ VALUES
     ('5678901234567890', '789', '2027-03-31');
 
 -- 3. Customers Table
-INSERT INTO Customers (ID, Address, PaymentID, Budget)
+INSERT INTO Customers (ID, Address, PaymentID, Budget , Telephone)
 VALUES
-    (2, '123 Main St, Anytown USA', 1, 10000.00),
-    (3, '456 Oak Rd, Somewhere City', 2, 15000.00),
-    (4, '789 Elm St, Nowhere Town', 3, 20000.00);
+    (2, '123 Main St, Anytown USA', 1, 10000.00  , 0105040565),
+    (3, '456 Oak Rd, Somewhere City', 2, 15000.00, 0105040656),
+    (4, '789 Elm St, Nowhere Town', 3, 20000.00 ,  0114534535);
 
 -- 4. HallProvider Table
 INSERT INTO HallProvider (ProvID, HallName, Location, Capacity, Size)

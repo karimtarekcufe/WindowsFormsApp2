@@ -22,10 +22,8 @@ namespace WindowsFormsApp2
             {
                
                 case "Admin":
-
                     break;
                 case "Customer":
-
                     break;
                 case "HallProvider":
                     break;
@@ -45,6 +43,11 @@ namespace WindowsFormsApp2
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
         {
 
         }
