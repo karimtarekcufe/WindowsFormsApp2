@@ -27,7 +27,7 @@ namespace WindowsFormsApp2
             username = name;
           
             f.Hide();
-            controlobj = f.GetController();
+            controller1 = f.GetController();
             id = controller1.getID();
             InitializeComponent();
             label5.Text = role;
@@ -35,6 +35,8 @@ namespace WindowsFormsApp2
             button4.Visible = false;
             button5.Visible = false;
             button6.Visible = false;
+            label6.Visible = false;
+            label8.Visible = false;
             this.FormClosing += Form3_FormClosing;
             switch (temprole)
             {
@@ -66,8 +68,11 @@ namespace WindowsFormsApp2
                 case "Caterer":
                     break;
                 case "Entertainer":
-                    string type = controlobj.EntType(ID);
+                    string type = controller1.EntType(id);
                     button1.Text = "view Requests";
+                    label6.Show();
+                    label8.Show();
+                    button3.Hide();
                     switch (type)
                     {
                     case "Musician":
@@ -84,7 +89,6 @@ namespace WindowsFormsApp2
                         label8.Text = "Photographers";
                         button2.Text = "Update info";
                         button3.Text = "Delete User";
-                        button3.Hide();
                         break;
                     }
                     break;
@@ -96,7 +100,7 @@ namespace WindowsFormsApp2
 
         public Controller GetController()
         {
-            return controlobj;
+            return controller1;
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -180,7 +184,7 @@ namespace WindowsFormsApp2
             }
             if(temprole == "Entertainer")
             {
-                DataTable dt = controlobj.getDateEnt(id);
+                DataTable dt = controller1.getDateEnt(id);
                 //DataTable dt2 = controlobj.getStatusEnt(id);
                 bool cannotDel = false;
                 DateTime currentDate = DateTime.Now;

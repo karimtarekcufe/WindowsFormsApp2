@@ -24,7 +24,6 @@ namespace WindowsFormsApp2
         {
             controller1 = new Controller();
             InitializeComponent();
-
             // Initialize the timer
             hideButtonTimer = new System.Windows.Forms.Timer(); 
             hideButtonTimer.Interval = 5000;  
@@ -90,12 +89,18 @@ namespace WindowsFormsApp2
                                     {
                                         DataTable dt2 = controller1.getID(textBox1.Text, textBox2.Text);
                                         int id = Convert.ToInt32(dt2.Rows[0][0]);
-                                        Form3 form3 = new Form3(this, role, username, id);
+<<<<<<< HEAD
+                                        Form3 form3 = new Form3(this, role, username);
+
+//>>>>>>> omar finalpppp
                                         form3.Show();
                                     }
                                     else
                                     {
-                                        Form3 form3 = new Form3(this, role, username, -1);
+<<<<<<< HEAD
+                                        Form3 form3 = new Form3(this, role, username);
+=======
+>>>>>>> omar finalpppp
                                         form3.Show();
                                     }
                                 }
