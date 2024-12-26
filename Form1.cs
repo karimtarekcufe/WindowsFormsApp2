@@ -31,6 +31,11 @@ namespace WindowsFormsApp2
             hideButtonTimer.Tick += HideButtonTimer_Tick; 
         }
 
+        public Controller GetController()
+        {
+            return controller1;
+        }
+
         private void label1_Click(object sender, EventArgs e)
         {
         }
@@ -76,11 +81,30 @@ namespace WindowsFormsApp2
                             MessageBox.Show("Login successful!");
                             DataTable dt = controller1.selectroles(textBox1.Text, textBox2.Text);
                             if (dt.Rows[0][0] != null)
-                            {
+                            { 
                                 string role = Convert.ToString(dt.Rows[0][0]);
                                 string username = Convert.ToString(dt.Rows[0][1]);
-                                Form3 form3 = new Form3(this, role, username);
-                                form3.Show();
+                                if (role != "Admin")
+                                {
+                                    if (role == "Entertainer")
+                                    {
+                                        DataTable dt2 = controller1.getID(textBox1.Text, textBox2.Text);
+                                        int id = Convert.ToInt32(dt2.Rows[0][0]);
+                                        Form3 form3 = new Form3(this, role, username, id);
+                                        form3.Show();
+                                    }
+                                    else
+                                    {
+                                        Form3 form3 = new Form3(this, role, username, -1);
+                                        form3.Show();
+                                    }
+                                }
+                                else
+                                {
+                                    Admin f1 = new Admin(this );
+                                    f1.Show();
+                                    this.Hide();
+                                }
                             }
 
                             // Reset failed attempts on successful login
