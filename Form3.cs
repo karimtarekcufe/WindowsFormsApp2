@@ -12,9 +12,13 @@ namespace WindowsFormsApp2
 {
     public partial class Form3 : Form
     {
+        string role;
+        string name; 
         public Form3(Form f ,string role,string name)
         {
             f.Hide();
+            this.role = role;
+            this.name = name;
             InitializeComponent();
             label5.Text = role;
             label7.Text = name;
@@ -49,7 +53,11 @@ namespace WindowsFormsApp2
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            if (role == "HallProvider")
+            {
+                View_Booking view_Booking = new View_Booking(name);
+                view_Booking.Show();
+            }
         }
     }
 }
