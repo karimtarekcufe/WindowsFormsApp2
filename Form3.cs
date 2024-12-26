@@ -30,7 +30,11 @@ namespace WindowsFormsApp2
                 case "Customer":
                     break;
                 case "HallProvider":
-                    { button1.Text = "View Booking"; }
+                    { button1.Text = "View Booking";
+                      button2.Text = "Add Venue";
+                      button3.Text = "Remove Venue";
+
+                    }
                     break;
                 case "Caterer":
                     break;
@@ -70,6 +74,15 @@ namespace WindowsFormsApp2
                 view_Booking.Show();
             }
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (role == "HallProvider")
+            {
+                Remove_Venue remove_Venue = new Remove_Venue(name);
+                remove_Venue.Show();
+            }
         }
     }
 }

@@ -67,6 +67,16 @@ namespace DBapplication
             string query = " INSERT INTO HallProvider ( ProvID, HallName, Location, Capacity, Size)\r\nVALUES ('" + id + "', '" + name + "', '" + location + "', '" + capacity + "', '" + size + "');\r\n";
             return dbMan.ExecuteNonQuery(query);
         }
+        public DataTable TablesToDelete(string id)
+        {
+            string query = "SELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND HallProvider.ProvID= '"+id+"' AND Request.Date<'"+DateTime.Now+ "' union\r\nSELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE   Request.HallID != HallProvider.HallID";
+            return dbMan.ExecuteReader(query);
+        }
+        public int removeHall(string id , string hallid)
+        {
+            string query = "Delete  from HallProvider where HallID = '"+hallid+"' and ProvID = '"+id+"'\r\n";
+            return dbMan.ExecuteNonQuery(query);
+        }
     }
 }
 

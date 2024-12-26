@@ -74,6 +74,12 @@
     <Compile Include="Interface2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Remove_Venue.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Remove_Venue.Designer.cs">
+      <DependentUpon>Remove_Venue.cs</DependentUpon>
+    </Compile>
     <Compile Include="View_Booking.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,6 +107,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Remove_Venue.resx">
+      <DependentUpon>Remove_Venue.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View_Booking.resx">
       <DependentUpon>View_Booking.cs</DependentUpon>
     </EmbeddedResource>
