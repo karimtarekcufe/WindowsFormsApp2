@@ -30,6 +30,7 @@ namespace WindowsFormsApp2
                 case "Customer":
                     break;
                 case "HallProvider":
+                    { button1.Text = "View Booking"; }
                     break;
                 case "Caterer":
                     break;
@@ -58,6 +59,17 @@ namespace WindowsFormsApp2
                 View_Booking view_Booking = new View_Booking(name);
                 view_Booking.Show();
             }
+           
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (role == "HallProvider")
+            {
+                Add_Venue view_Booking = new Add_Venue(name);
+                view_Booking.Show();
+            }
+
         }
     }
 }

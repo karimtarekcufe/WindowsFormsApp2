@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Add_Venue.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Add_Venue.Designer.cs">
+      <DependentUpon>Add_Venue.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +80,9 @@
     <Compile Include="View_Booking.Designer.cs">
       <DependentUpon>View_Booking.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Add_Venue.resx">
+      <DependentUpon>Add_Venue.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

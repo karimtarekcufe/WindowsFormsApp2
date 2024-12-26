@@ -15,6 +15,7 @@ namespace WindowsFormsApp2
     {
         Controller c = new Controller();
         string name;
+        string i;
         public View_Booking( string name)
         {
             InitializeComponent();
@@ -23,8 +24,10 @@ namespace WindowsFormsApp2
             dt = c.getID(name);
             int  id =(int) dt.Rows[0][0];
             string i = id.ToString();
+            this.i = i; 
             dataGridView1.DataSource = c.getRequestsforhall(i);
            
+
 
         }
 
@@ -36,6 +39,17 @@ namespace WindowsFormsApp2
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked) {
+                dataGridView1.DataSource = c.getcurrentrequestsforhall(i);
+            }
+            else
+            {
+                dataGridView1.DataSource = c.getRequestsforhall(i);
+            }
         }
     }
 }

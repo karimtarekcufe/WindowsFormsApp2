@@ -56,7 +56,17 @@ namespace DBapplication
             dbMan.ExecuteReader(query);
             return dbMan.ExecuteReader(query);
         }
+        public DataTable getcurrentrequestsforhall(string id)
+        {
+            string query = "SELECT HallProvider.HallName , HallProvider.Location , Request.StartTime , Request.EndTime , Request.Date ,Customers.Name,Customers.Telephone\r\nFROM Request , HallProvider , Customers\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND Customers.ID=Request.CustomerID AND HallProvider.ProvID = '"+id+"' AND Request.Date>='"+DateTime.Now+"' ";
+            return dbMan.ExecuteReader(query);
+        }
 
+        public int insertHall(string id,string name, string location , string capacity , string size = "NULL")
+        {
+            string query = " INSERT INTO HallProvider ( ProvID, HallName, Location, Capacity, Size)\r\nVALUES ('" + id + "', '" + name + "', '" + location + "', '" + capacity + "', '" + size + "');\r\n";
+            return dbMan.ExecuteNonQuery(query);
+        }
     }
 }
 
