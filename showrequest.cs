@@ -20,8 +20,7 @@ namespace WindowsFormsApp2
             f.Hide();
             InitializeComponent();
             cont1 = new Controller();
-            dataGridView1 = new DataGridView();
-            dataGridView2= new DataGridView();
+            
             dataGridView1.DataSource = cont1.getaalunservedrequests(cid);
             dataGridView2.DataSource = cont1.getaalservedrequests(cid);
         }
