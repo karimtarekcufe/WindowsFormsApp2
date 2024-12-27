@@ -357,7 +357,10 @@ namespace DBapplication
         }
         public DataTable getcurrentrequestsforhall(string id)
         {
-            string query = "SELECT Request.ID, HallProvider.HallName , Request.HallApproved , HallProvider.Location , Request.StartTime , Request.EndTime , Request.Date ,Customers.Name,Customers.Telephone\r\nFROM Request , HallProvider , Customers\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND Customers.ID=Request.CustomerID AND HallProvider.ProvID = '"+id+"' AND Request.Date>='"+DateTime.Now+"' ";
+            DateTime now = DateTime.Now;
+            string formattedDate = now.ToString("yyyy-MM-dd");
+
+            string query = "SELECT Request.ID, HallProvider.HallName , Request.HallApproved , HallProvider.Location , Request.StartTime , Request.EndTime , Request.Date ,Customers.Name,Customers.Telephone\r\nFROM Request , HallProvider , Customers\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND Customers.ID=Request.CustomerID AND HallProvider.ProvID = '"+id+"' AND Request.Date>='"+formattedDate+"' ";
             return dbMan.ExecuteReader(query);
         }
 
@@ -368,7 +371,9 @@ namespace DBapplication
         }
         public DataTable TablesToDelete(string id)
         {
-            string query = "SELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND HallProvider.ProvID= '"+id+"' AND Request.Date<'"+DateTime.Now+ "' union\r\nSELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE   Request.HallID != HallProvider.HallID";
+            DateTime now = DateTime.Now;
+            string formattedDate = now.ToString("yyyy-MM-dd");
+            string query = "SELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND HallProvider.ProvID= '"+id+"' AND Request.Date<'"+formattedDate+ "' union\r\nSELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE   Request.HallID != HallProvider.HallID";
             return dbMan.ExecuteReader(query);
         }
         public int removeHall(string id , string hallid)

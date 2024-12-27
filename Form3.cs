@@ -75,6 +75,11 @@ namespace WindowsFormsApp2
         {
 
         }
+        public int selectcid()
+        {
+            DataTable dt = controller1.selectcid(label7.Text);
+            return (int)dt.Rows[0][0];
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -100,17 +105,21 @@ namespace WindowsFormsApp2
                 Add_Venue view_Booking = new Add_Venue(username);
                 view_Booking.Show();
             }
+            int cid = selectcid();
+            if (temprole == "Customer")
+            {
+                showrequest srequest = new showrequest(this, cid);
+                srequest.Show();
+
+            }
 
         }
 
-        }
+        
 
-      
 
-       public int selectcid()
-        {
-           DataTable dt= controller1.selectcid(label7.Text);
-            return (int) dt.Rows[0][0];
+
+   
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -133,16 +142,7 @@ namespace WindowsFormsApp2
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            int cid = selectcid();
-            if (temprole == "Customer")
-            {
-                showrequest srequest = new showrequest(this, cid);
-                srequest.Show();
-
-            }
-        }
+     
 
 
         private void button4_Click(object sender, EventArgs e)
