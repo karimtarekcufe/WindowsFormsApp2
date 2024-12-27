@@ -41,7 +41,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
@@ -51,6 +50,7 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,9 +88,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(207, 328);
+            this.button1.Location = new System.Drawing.Point(202, 344);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(183, 33);
+            this.button1.Size = new System.Drawing.Size(208, 33);
             this.button1.TabIndex = 5;
             this.button1.Text = "make request";
             this.button1.UseVisualStyleBackColor = true;
@@ -142,7 +142,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(484, 247);
+            this.button2.Location = new System.Drawing.Point(487, 252);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(291, 32);
             this.button2.TabIndex = 10;
@@ -162,7 +162,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(240, 252);
+            this.label6.Location = new System.Drawing.Point(48, 307);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(44, 16);
             this.label6.TabIndex = 14;
@@ -171,18 +171,10 @@
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(207, 252);
+            this.comboBox3.Location = new System.Drawing.Point(176, 260);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(121, 24);
             this.comboBox3.TabIndex = 16;
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(334, 252);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(121, 24);
-            this.comboBox4.TabIndex = 17;
             // 
             // label7
             // 
@@ -242,7 +234,7 @@
             // 
             this.textBox3.Location = new System.Drawing.Point(624, 121);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(105, 22);
+            this.textBox3.Size = new System.Drawing.Size(121, 22);
             this.textBox3.TabIndex = 27;
             // 
             // button3
@@ -265,11 +257,19 @@
             this.label10.TabIndex = 29;
             this.label10.Text = "please enter date in format yyyy-mm-dd";
             // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(176, 304);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(100, 22);
+            this.textBox4.TabIndex = 30;
+            // 
             // makerequest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(856, 576);
+            this.Controls.Add(this.textBox4);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.textBox3);
@@ -279,7 +279,6 @@
             this.Controls.Add(this.comboBox5);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.comboBox4);
             this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -295,6 +294,7 @@
             this.Controls.Add(this.textBox1);
             this.Name = "makerequest";
             this.Text = "make request";
+            this.Load += new System.EventHandler(this.makerequest_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -316,7 +316,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox comboBox5;
@@ -326,5 +325,6 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBox4;
     }
 }
