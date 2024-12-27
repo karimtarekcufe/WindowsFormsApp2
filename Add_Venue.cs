@@ -32,7 +32,7 @@ namespace WindowsFormsApp2
             string location = textBox2.Text.Trim();
             string capacityText = textBox4.Text.Trim();
             string sizeText = textBox3.Text.Trim();
-
+            string pricePerBookingInput = textBox5.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(hallName))
             {
@@ -60,14 +60,30 @@ namespace WindowsFormsApp2
                 MessageBox.Show("Size must be a valid positive number if provided.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+
+            if (string.IsNullOrEmpty(pricePerBookingInput))
+            {
+                MessageBox.Show("Price per Booking cannot be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                textBox5.Focus();
+                return;
+            }
+            if (!int.TryParse(pricePerBookingInput, out int pricePerBooking))
+            {
+                MessageBox.Show("Price per Booking must be a valid integer.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                textBox5.Focus();
+                return;
+            }
+
+
             int result = 0;
             if (!string.IsNullOrWhiteSpace(sizeText))
             {
-                result = c.insertHall(id, hallName, location, capacityText, sizeText);
+                result = c.insertHall(id, hallName, location, capacityText,pricePerBookingInput, sizeText);
             }
             else
             {
-                result = c.insertHall(id, hallName, location, capacityText);
+                result = c.insertHall(id, hallName, location, pricePerBookingInput, capacityText);
             }
 
             if (result>0)
@@ -79,6 +95,11 @@ namespace WindowsFormsApp2
                 MessageBox.Show("Failed to add venue!", "Failure", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
 
         }
     }

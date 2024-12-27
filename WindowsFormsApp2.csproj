@@ -64,6 +64,12 @@
     <Compile Include="Add_Venue.Designer.cs">
       <DependentUpon>Add_Venue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Edit_Venue.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Edit_Venue.Designer.cs">
+      <DependentUpon>Edit_Venue.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="deleteguest.resx">
       <DependentUpon>deleteguest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Edit_Venue.resx">
+      <DependentUpon>Edit_Venue.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

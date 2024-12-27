@@ -53,7 +53,8 @@ namespace WindowsFormsApp2
                     { button1.Text = "View Booking";
                       button2.Text = "Add Venue";
                       button3.Text = "Remove Venue";
-
+                      button4.Visible = true;
+                      button4.Text = "Edit Venue";
                     }
                     break;
                 case "Caterer":
@@ -153,6 +154,11 @@ namespace WindowsFormsApp2
                 showguest showguest = new showguest(this, cid);
                 showguest.Show();
 
+            }
+            if (temprole == "HallProvider")
+            {
+                Edit editguest = new Edit(cid);
+                editguest.Show();
             }
 
         }

@@ -81,12 +81,12 @@ namespace DBapplication
 
         public DataTable gethallid(string name)
         {
-            string query = $"select hallid from HallProvider\r\nwhere hallname='{name}';";
+            string query = $"select HallID from HallProvider\r\nwhere hallname='{name}';";
             return dbMan.ExecuteReader(query);
         }
         public DataTable gethallname(string location)
         {
-            string query = $"select hallname from HallProvider where location='{location}';";
+            string query = $"select HallName from HallProvider where location='{location}';";
             return dbMan.ExecuteReader(query);
         }
         public int IsHallBooked(string hallName, DateTime date, string startTime, string endTime)
@@ -245,7 +245,7 @@ namespace DBapplication
                    $"WHERE c.ID = '{cid}' " +
                    "AND r.HallID = h.HallID " +
                    "AND r.ProvID = h.ProvID " +
-                   "AND r.Date <= GETDATE()";
+                   "AND r.Date >= GETDATE()";
             return dbMan.ExecuteReader(query);
 
 
@@ -266,7 +266,7 @@ namespace DBapplication
                    $"WHERE c.ID = '{cid}' " +
                    "AND r.HallID = h.HallID " +
                    "AND r.ProvID = h.ProvID " +
-                   "AND r.Date > GETDATE()";
+                   "AND r.Date < GETDATE()";
             return dbMan.ExecuteReader(query);
 
 
@@ -364,9 +364,9 @@ namespace DBapplication
             return dbMan.ExecuteReader(query);
         }
 
-        public int insertHall(string id,string name, string location , string capacity , string size = "NULL")
+        public int insertHall(string id,string name, string location , string capacity ,string price,  string size = "0")
         {
-            string query = " INSERT INTO HallProvider ( ProvID, HallName, Location, Capacity, Size)\r\nVALUES ('" + id + "', '" + name + "', '" + location + "', '" + capacity + "', '" + size + "');\r\n";
+            string query = " INSERT INTO HallProvider ( ProvID, HallName, Location, Capacity,bookingpriceday, Size)\r\nVALUES ('" + id + "', '" + name + "', '" + location + "', '" + capacity + "','"+price+"', '" + size + "');\r\n";
             return dbMan.ExecuteNonQuery(query);
         }
         public DataTable TablesToDelete(string id)
@@ -385,6 +385,57 @@ namespace DBapplication
         {
             string query = "UPDATE Request SET HallApproved='Y' WHERE ID='"+RequestID+"'";
             return dbMan.ExecuteNonQuery(query);
+        }
+        public DataTable getHalls(string id){
+            string query = "SELECT HallProvider.HallName , HallProvider.HallID , HallProvider.Capacity ,HallProvider.Size , HallProvider.bookingpriceday " +
+                "FROM HallProvider " +
+                "WHERE HallProvider.ProvID='"+id+"'";
+            return dbMan.ExecuteReader(query);
+        }
+        public DataTable getHallToUpdate(string id , string hallid)
+        {
+            string query = "SELECT HallProvider.HallName , HallProvider.Capacity ,HallProvider.Size , HallProvider.bookingpriceday " +
+                " FROM HallProvider " +
+                " WHERE HallProvider.ProvID ='" + id + "' AND HallProvider.HallID = '" + hallid + "'";
+            return dbMan.ExecuteReader(query);
+        }
+        public int insertTransport(string type , string serving ,string price,string provid , string hallid )
+        {
+            string query = "DECLARE @NewID INT; " +
+                "INSERT INTO Transportation (Type, Serving_Location , Price) " +
+                "VALUES ('"+type+"', '"+serving+"' , '"+price+"'); " +
+                "SET @NewID = SCOPE_IDENTITY(); " +
+                "SELECT @NewID AS NewIdentityValue;";
+            object identity =  dbMan.ExecuteScalar(query);
+
+            query = "INSERT INTO HallProviderTransportation (ProvID , HallID , TransportationID) " +
+                "VALUES ('" + provid + "' ,'" + hallid +"' , '"+identity.ToString()+"')";
+
+            return dbMan.ExecuteNonQuery(query);
+        }
+        public DataTable getTransportToDelete(string ProvID , string HallID)
+        {
+            string query = "SELECT Transportation.ID , Transportation.Type , Transportation.Serving_Location , Transportation.Rating , Transportation.Price " +
+                "FROM HallProviderTransportation , Transportation " +
+                "WHERE\tTransportation.ID = HallProviderTransportation.TransportationID " +
+                "AND HallProviderTransportation.ProvID = '"+ProvID+"' AND HallProviderTransportation.HallID = '"+HallID+"' ";
+            return dbMan.ExecuteReader(query);
+        }
+        public int DeleteTransport(string TransportID)
+        {
+            string query = "DELETE " +
+                "FROM Transportation " +
+                "WHERE Transportation.ID = '" + TransportID + "'";
+            return dbMan.ExecuteNonQuery(query);
+        }
+        public int UpdateVenueData(string id , string hallid , string name , string capacity , string size , string price)
+        {
+            string query = $"UPDATE HallProvider " +
+                $"SET HallName = '" + name + "', Capacity = '" + capacity + "', " +
+                "  Size = '" + size + "',   " +
+                " bookingpriceday = '" + price + "' " +
+                "WHERE  HallID = '" + hallid + "' AND ProvID = '" + id + "';";
+            return dbMan.ExecuteNonQuery(query);    
         }
     }
 }
