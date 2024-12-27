@@ -46,6 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cancelrequest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="cancelrequest.Designer.cs">
+      <DependentUpon>cancelrequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="deleteguest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="deleteguest.Designer.cs">
+      <DependentUpon>deleteguest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,9 +77,42 @@
     <Compile Include="Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
+    <Compile Include="addguest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="addguest.Designer.cs">
+      <DependentUpon>addguest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="showguest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="showguest.Designer.cs">
+      <DependentUpon>showguest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="showrequest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="showrequest.Designer.cs">
+      <DependentUpon>showrequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="makerequest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="makerequest.Designer.cs">
+      <DependentUpon>makerequest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interface2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="addguest.resx">
+      <DependentUpon>addguest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="cancelrequest.resx">
+      <DependentUpon>cancelrequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="deleteguest.resx">
+      <DependentUpon>deleteguest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -76,6 +121,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="showguest.resx">
+      <DependentUpon>showguest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="showrequest.resx">
+      <DependentUpon>showrequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="makerequest.resx">
+      <DependentUpon>makerequest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
