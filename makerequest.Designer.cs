@@ -142,9 +142,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(487, 252);
+            this.button2.Location = new System.Drawing.Point(487, 251);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(291, 32);
+            this.button2.Size = new System.Drawing.Size(292, 33);
             this.button2.TabIndex = 10;
             this.button2.Text = "add service";
             this.button2.UseVisualStyleBackColor = true;

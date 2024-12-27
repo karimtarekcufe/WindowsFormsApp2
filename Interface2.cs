@@ -456,7 +456,7 @@ namespace DBapplication
         {
             string query = $"delete from request where id='{rid}'";
 
-            return (int)dbMan.ExecuteScalar(query);
+            return dbMan.ExecuteNonQuery(query);
         }
 
         public int deleteentertainementrequest(string requestId, string entertainerId)
