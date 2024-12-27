@@ -327,11 +327,63 @@ namespace DBapplication
             string query = $"SELECT e.ID, e.Name FROM EntertainmentRequest er, Entertainers e WHERE e.ID = er.EntertainersID AND er.RequestID = '{text}' AND er.Type = '{type}'";
             return dbMan.ExecuteReader(query);
         }
-        public DataTable selectAvailableTransportation(string hallId, string requestedType)
+        public DataTable selectAvailableTransportation(string hallId, string requestedType, string v)
         {
-            string query = $"SELECT TOP 1 t.ID, t.Type, t.Serving_Location, t.Rating FROM HallProviderTransportation hpt JOIN Transportation t ON hpt.TransportationID = t.ID WHERE hpt.HallID = '{hallId}' AND t.Type = '{requestedType}' ORDER BY t.Rating DESC;";
+            string query = $@"
+    
+    SELECT TOP 1 
+        t.ID, 
+        t.Type, 
+        t.Serving_Location, 
+        t.Rating 
+    FROM 
+        HallProviderTransportation hpt
+    JOIN 
+        Transportation t ON hpt.TransportationID = t.ID
+    WHERE 
+        hpt.HallID = '{hallId}' 
+        AND t.Type = '{requestedType}' 
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM transportaionrequest tr ,Request r
+            WHERE tr.Tid = t.ID  and tr.requestid=r.ID
+              AND  r.Date= '{v}'
+        )
+    ORDER BY 
+        t.Rating DESC;";
 
             return dbMan.ExecuteReader(query);
+        }
+        public DataTable selectAvailableCatererForFood(string hallId, string requestedFood, string requestDate, string quantity)
+        {
+            string query = $@"
+    SELECT TOP 1 
+        m.CatererID, 
+        c.Rating 
+    FROM 
+        MenuOption m
+    JOIN 
+        Caterer c ON m.CatererID = c.ID
+    WHERE 
+        m.Fname = '{requestedFood}' 
+        AND not EXISTS (
+            SELECT 1 
+            FROM MenuRequests mr
+            JOIN Request r ON mr.RequestID = r.ID
+            WHERE mr.CatererID = m.CatererID 
+            AND mr.Fname = m.Fname
+            AND r.Date = '{requestDate}'
+        )
+    ORDER BY c.Rating DESC;
+    ";
+
+            return dbMan.ExecuteReader(query);
+        }
+
+        public bool insertFoodMenuRequest(string requestId, string foodName, string catererId,string quantity)
+        {
+            string query = $"INSERT INTO MenuRequests (RequestID, Fname, CatererID,quantity) VALUES ('{requestId}', '{foodName}', '{catererId}','{quantity}')";
+            return dbMan.ExecuteNonQuery(query) > 0;
         }
 
         public bool insertTransportationRequest(string requestId, string transportationId)
@@ -340,7 +392,7 @@ namespace DBapplication
             return dbMan.ExecuteNonQuery(query) > 0;
         }
 
-        internal void insertFoodMenu(int cid, string foodMenu)
+        public int insertFoodMenu(int cid, string foodMenu)
         {
             throw new NotImplementedException();
         }
@@ -386,6 +438,46 @@ namespace DBapplication
             string query = "UPDATE Request SET HallApproved='Y' WHERE ID='"+RequestID+"'";
             return dbMan.ExecuteNonQuery(query);
         }
+
+        public DataTable selectallridtransporattion(string text)
+        {
+            string query = $"SELECT t.Type, t.ID FROM Transportation t INNER JOIN transportaionrequest tr ON tr.Tid = t.ID WHERE tr.requestid = '{text}';";
+            return dbMan.ExecuteReader(query);
+        }
+
+
+        public DataTable selectallridfood(string text)
+        {
+            string query = $"SELECT f.Fname, f.CatererID FROM MenuOption f JOIN MenuRequests mr ON mr.CatererID = f.CatererID AND mr.Fname = f.Fname WHERE mr.RequestID = '{text}';";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public int deletewholerequest(string rid)
+        {
+            string query = $"delete from request where id='{rid}'";
+
+            return (int)dbMan.ExecuteScalar(query);
+        }
+
+        public int deleteentertainementrequest(string requestId, string entertainerId)
+        {
+            string query = $"DELETE FROM EntertainmentRequest WHERE requestid = '{requestId}' AND EntertainersID = '{entertainerId}';";
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        public int deletefoodrequest(string requestId, string catererId, string fname)
+        {
+            string query = $"DELETE FROM MenuRequests WHERE RequestID = '{requestId}' AND Fname = '{fname}' AND CatererID = '{catererId}';";
+            return dbMan.ExecuteNonQuery(query);
+
+        }
+        public int deletetransportationrequest(string tid, string requestId)
+        {
+            string query = $"DELETE FROM transportaionrequest WHERE Tid = '{tid}' AND RequestID = '{requestId}';";
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+
         public DataTable getHalls(string id){
             string query = "SELECT HallProvider.HallName , HallProvider.HallID , HallProvider.Capacity ,HallProvider.Size , HallProvider.bookingpriceday " +
                 "FROM HallProvider " +

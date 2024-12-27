@@ -59,7 +59,7 @@ namespace WindowsFormsApp2
             label5.Visible = false;
             label6.Visible = false;
             comboBox3.Visible = false;
-            comboBox4.Visible = false;
+            textBox4.Visible = false;
 
 
         }
@@ -73,6 +73,8 @@ namespace WindowsFormsApp2
             switch (comboBox2.SelectedIndex)
             {
                 case 0:
+                    label6.Visible = false;
+                    textBox4.Visible = false;
                     label5.Visible = true;
                     label5.Text = "Genre";
                     comboBox3.Visible = true;
@@ -85,6 +87,8 @@ namespace WindowsFormsApp2
 
                     break;
                 case 1:
+                    label6.Visible = false;
+                    textBox4.Visible = false;
                     label5.Visible = true;
                     label5.Text = "camera type";
                     comboBox3.Visible = true;
@@ -95,6 +99,8 @@ namespace WindowsFormsApp2
 
                     break;
                 case 2:
+                    label6.Visible = false;
+                    textBox4.Visible = false;
                     label5.Visible = true;
                     label5.Text = "transportation";
                     comboBox3.Visible = true;
@@ -113,6 +119,9 @@ namespace WindowsFormsApp2
                 case 3:
                     label5.Visible = true;
                     label5.Text = "Food";
+                    label6.Visible = true;
+                    label6.Text = "quantity";
+                    textBox4.Visible = true;
                     comboBox3.Visible = true;
                     dt = controller1.selectfood();
                     comboBox3.DataSource = dt;
@@ -120,6 +129,8 @@ namespace WindowsFormsApp2
                     comboBox3.DisplayMember = "Fname";
                     break;
                 case 4:
+                    label6.Visible = false;
+                    textBox4.Visible = false;
                     label5.Visible = true;
                     label5.Text = "flower arrangements";
                     comboBox3.Visible = true;
@@ -190,32 +201,30 @@ namespace WindowsFormsApp2
                     return;
                 }
             }
-
-            if (comboBox4.Visible)
+            if (textBox4.Visible)
             {
-                if (!string.IsNullOrEmpty(comboBox4.Text))
+                if (!string.IsNullOrEmpty(textBox4.Text))
                 {
                     if (!dta.Columns.Contains(label6.Text))
                     {
                         dta.Columns.Add(label6.Text);
                     }
-                    newRow[label6.Text] = comboBox4.Text;
+                    newRow[label6.Text] = textBox4.Text;
+                
+
                 }
                 else
                 {
                     MessageBox.Show($"Please do not leave {label6.Text} empty.");
+
                     return;
                 }
+
             }
 
-            if (newRow.ItemArray.Any(field => field != null && field != DBNull.Value))
-            {
-                dta.Rows.Add(newRow);
-            }
-            else
-            {
-                MessageBox.Show("No data to insert.");
-            }
+            dta.Rows.Add(newRow);
+
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -361,10 +370,12 @@ namespace WindowsFormsApp2
             {
                 foreach (DataRow row in dt3.Rows)
                 {
+                    DataTable date = controller1.getasssignedrequestdate(id);
+                    DateTime date1 = Convert.ToDateTime(date.Rows[0][0]);
                     string transportationType = row["transportation"].ToString();
                     int hid=Convert.ToInt32(controller1.gethallid(comboBox5.Text).Rows[0][0]);
                     // Call a controller method to find the first suitable transportation ID
-                    DataTable result = controller1.selectAvailableTransportation(Convert.ToString(hid), transportationType);
+                    DataTable result = controller1.selectAvailableTransportation(Convert.ToString(hid), transportationType,Convert.ToString(date1));
 
                     if (result != null && result.Rows.Count > 0)
                     {
@@ -392,9 +403,37 @@ namespace WindowsFormsApp2
                 foreach (DataRow row in dt4.Rows)
                 {
                     string foodMenu = row["Food"].ToString();
-                    controller1.insertFoodMenu(cid, foodMenu);  // Call the appropriate insert function
+                    string quantity = row["quantity"].ToString();
+
+
+
+                    DataTable date = controller1.getasssignedrequestdate(id);
+                    DateTime date1 = Convert.ToDateTime(date.Rows[0][0]);
+
+                    String hid = Convert.ToString(controller1.gethallid(comboBox5.Text).Rows[0][0]);
+
+                    DataTable result = controller1.selectAvailableCatererForFood(hid, foodMenu, date1.ToString("yyyy-MM-dd"),quantity);
+
+                    if (result != null && result.Rows.Count > 0)
+                    {
+                        string catererId = result.Rows[0]["CatererID"].ToString();
+
+                        controller1.insertFoodMenuRequest(id.ToString(), foodMenu, catererId,quantity);
+                    }
+                    else
+                    {
+                        DataGridViewRow newRow = new DataGridViewRow();
+                        newRow.Cells.Add(new DataGridViewTextBoxCell
+                        {
+                            Value = $"No available caterer for {foodMenu} found for Hall ID associated with Request {id} on {date1.ToString("yyyy-MM-dd")}"
+                        });
+                                                dataGridView1.Rows.Add(newRow);
+
+                    }
                 }
+
             }
+
 
             if (dt5 != null && dt5.Rows.Count > 0)
             {
@@ -452,7 +491,10 @@ namespace WindowsFormsApp2
                 }
             }
 
-        
+        private void makerequest_Load(object sender, EventArgs e)
+        {
+
+        }
     }
     }
 
