@@ -30,11 +30,10 @@ namespace WindowsFormsApp2
             button4.Visible = false;
             button5.Visible = false;
             button6.Visible = false;
-            switch (role)
+            switch (temprole)
             {
                
                 case "Admin":
-
                     break;
                 case "Customer":
                     button1.Text = "make request";
@@ -51,7 +50,11 @@ namespace WindowsFormsApp2
 
                     break;
                 case "HallProvider":
-                    
+                    { button1.Text = "View Booking";
+                      button2.Text = "Add Venue";
+                      button3.Text = "Remove Venue";
+
+                    }
                     break;
                 case "Caterer":
                     break;
@@ -75,20 +78,54 @@ namespace WindowsFormsApp2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int cid = selectcid();
-            if(temprole== "Customer")
+            if (temprole == "HallProvider")
             {
-                makerequest makerequest = new makerequest(this,username, cid);
+                View_Booking view_Booking = new View_Booking(username);
+                view_Booking.Show();
+            }
+            int cid = selectcid();
+            if (temprole == "Customer")
+            {
+                makerequest makerequest = new makerequest(this, username, cid);
                 makerequest.Show();
 
             }
+
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (temprole == "HallProvider")
+            {
+                Add_Venue view_Booking = new Add_Venue(username);
+                view_Booking.Show();
+            }
+
+        }
+
+        }
+
+      
 
        public int selectcid()
         {
            DataTable dt= controller1.selectcid(label7.Text);
             return (int) dt.Rows[0][0];
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (temprole == "HallProvider")
+            {
+                Remove_Venue remove_Venue = new Remove_Venue(username);
+                remove_Venue.Show();
+            }
+            int cid = selectcid();
+            if (temprole == "Customer")
+            {
+                addguest addguest = new addguest(this, cid);
+                addguest.Show();
+
+            }
         }
 
         private void label5_Click(object sender, EventArgs e)
@@ -107,16 +144,6 @@ namespace WindowsFormsApp2
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            int cid = selectcid();
-            if (temprole == "Customer")
-            {
-                addguest addguest = new addguest(this, cid);
-                addguest.Show();
-
-            }
-        }
 
         private void button4_Click(object sender, EventArgs e)
         {

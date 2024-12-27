@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
+
 namespace DBapplication
 {
     internal class Controller
@@ -342,6 +343,43 @@ namespace DBapplication
         internal void insertFoodMenu(int cid, string foodMenu)
         {
             throw new NotImplementedException();
+        }
+        public DataTable getRequestsforhall(string id)
+        {
+            string query = "SELECT Request.ID, HallProvider.HallName ,Request.HallApproved, HallProvider.Location , Request.StartTime , Request.EndTime , Request.Date ,Customers.Name,Customers.Telephone\r\nFROM Request , HallProvider , Customers\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND Customers.ID=Request.CustomerID AND HallProvider.ProvID = '" + id+"'";
+            return dbMan.ExecuteReader(query);
+        }
+        public DataTable getID(string username)
+        {
+            string query = "SELECT UserData.ID\r\nFROM UserData\r\nWHERE UserData.UserName='" + username + "'";
+            dbMan.ExecuteReader(query);
+            return dbMan.ExecuteReader(query);
+        }
+        public DataTable getcurrentrequestsforhall(string id)
+        {
+            string query = "SELECT Request.ID, HallProvider.HallName , Request.HallApproved , HallProvider.Location , Request.StartTime , Request.EndTime , Request.Date ,Customers.Name,Customers.Telephone\r\nFROM Request , HallProvider , Customers\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND Customers.ID=Request.CustomerID AND HallProvider.ProvID = '"+id+"' AND Request.Date>='"+DateTime.Now+"' ";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public int insertHall(string id,string name, string location , string capacity , string size = "NULL")
+        {
+            string query = " INSERT INTO HallProvider ( ProvID, HallName, Location, Capacity, Size)\r\nVALUES ('" + id + "', '" + name + "', '" + location + "', '" + capacity + "', '" + size + "');\r\n";
+            return dbMan.ExecuteNonQuery(query);
+        }
+        public DataTable TablesToDelete(string id)
+        {
+            string query = "SELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND HallProvider.ProvID= '"+id+"' AND Request.Date<'"+DateTime.Now+ "' union\r\nSELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE   Request.HallID != HallProvider.HallID";
+            return dbMan.ExecuteReader(query);
+        }
+        public int removeHall(string id , string hallid)
+        {
+            string query = "Delete  from HallProvider where HallID = '"+hallid+"' and ProvID = '"+id+"'\r\n";
+            return dbMan.ExecuteNonQuery(query);
+        }
+        public int ApproveRequest( string RequestID)
+        {
+            string query = "UPDATE Request SET HallApproved='Y' WHERE ID='"+RequestID+"'";
+            return dbMan.ExecuteNonQuery(query);
         }
     }
 }

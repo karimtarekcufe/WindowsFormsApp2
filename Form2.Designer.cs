@@ -72,12 +72,11 @@
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
-            "Admin",
             "Customer",
             "Caterer",
             "Entertainer",
             "Hall Provider"});
-            this.comboBox1.Location = new System.Drawing.Point(108, 116);
+            this.comboBox1.Location = new System.Drawing.Point(108, 124);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(100, 24);
             this.comboBox1.TabIndex = 2;
