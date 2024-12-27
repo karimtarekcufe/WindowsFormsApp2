@@ -26,7 +26,7 @@ namespace WindowsFormsApp2
             string i = id.ToString();
             this.i = i; 
             dataGridView1.DataSource = c.getRequestsforhall(i);
-           
+            button1.Visible = false;
 
 
         }
@@ -45,11 +45,35 @@ namespace WindowsFormsApp2
         {
             if (checkBox1.Checked) {
                 dataGridView1.DataSource = c.getcurrentrequestsforhall(i);
+                button1.Visible = true;
+                
             }
             else
             {
                 dataGridView1.DataSource = c.getRequestsforhall(i);
+                button1.Visible = false;
+
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 1 || dataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select one Booking.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var user = MessageBox.Show("Are You Sure You Want To Approve this Request (This Cannot Be undone)", "Approved", MessageBoxButtons.YesNo);
+            int result = 0;
+            if (user == DialogResult.Yes)
+            {
+                result = c.ApproveRequest(dataGridView1.SelectedRows[0].Cells[0].Value.ToString());
+
+                if (result > 0)
+                {
+                    MessageBox.Show("Booking Approved.", "Approved", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    dataGridView1.DataSource = c.getcurrentrequestsforhall(i);
+                }
+            } }
     }
 }
