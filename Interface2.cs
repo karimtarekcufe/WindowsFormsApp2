@@ -51,12 +51,7 @@ namespace DBapplication
 
 
 
-        public int checkusername(string text)
-        {
-            string query = $"SELECT count(UserName) FROM UserData WHERE UserName = '{text}'";
-            return (int)dbMan.ExecuteScalar(query);
-
-
+      
         public DataTable selectgenre()
         {
 
@@ -386,7 +381,7 @@ namespace DBapplication
             return dbMan.ExecuteReader(query);
         }
 
-        public bool insertFoodMenuRequest(string requestId, string foodName, string catererId,string quantity)
+        public bool insertFoodMenuRequest(string requestId, string foodName, string catererId , string quantity)
         {
             string query = $"INSERT INTO MenuRequests (RequestID, Fname, CatererID,quantity) VALUES ('{requestId}', '{foodName}', '{catererId}','{quantity}')";
             return dbMan.ExecuteNonQuery(query) > 0;
@@ -638,7 +633,7 @@ namespace DBapplication
 
 
 
-    }
+    
 
         public DataTable ViewBookEnt(int id)
         {

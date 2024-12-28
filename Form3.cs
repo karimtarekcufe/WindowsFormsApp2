@@ -14,11 +14,12 @@ namespace WindowsFormsApp2
 {
     public partial class Form3 : Form
     {
-        int id;
+        string id;
         Form1 f;
         string temprole;
         string username;
         Controller controller1;
+        Controller controlobj;
 
         public Form3(Form1 f ,string role,string name)
         {
@@ -27,8 +28,9 @@ namespace WindowsFormsApp2
             username = name;
           
             f.Hide();
+            
             controlobj = f.GetController();
-            id = controller1.getID();
+            id = controller1.getID(username).Rows[0][0].ToString();
             InitializeComponent();
             label5.Text = role;
             label7.Text = name;
@@ -66,7 +68,7 @@ namespace WindowsFormsApp2
                 case "Caterer":
                     break;
                 case "Entertainer":
-                    string type = controlobj.EntType(ID);
+                    string type = controlobj.EntType(int.Parse(id));
                     button1.Text = "view Requests";
                     switch (type)
                     {
