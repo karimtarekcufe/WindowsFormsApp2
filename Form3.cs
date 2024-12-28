@@ -70,6 +70,9 @@ namespace WindowsFormsApp2
                     }
                     break;
                 case "Caterer":
+                    button1.Text = "Add Menu Option";
+                    button2.Text = "View Requests";
+                    button3.Text = "change Price";
                     break;
                 case "Entertainer":
                     string type = controller1.EntType(int.Parse(id));
@@ -145,6 +148,12 @@ namespace WindowsFormsApp2
                 f.Show();
                 this.Hide();
             }
+            if (temprole == "Caterer")
+            {
+                AddMenuOption f = new AddMenuOption(this, controller1, int.Parse(id));
+                f.Show();
+                this.Hide();
+            }
 
         }
 
@@ -166,6 +175,13 @@ namespace WindowsFormsApp2
             {
                 UpdateInfoEnt f = new UpdateInfoEnt(this, int.Parse(id), label8.Text);
                 f.Show();
+            }
+
+            if (temprole == "Caterer")
+            {
+                ViewRequestCat f = new ViewRequestCat(this, controller1, int.Parse(id));
+                f.Show();
+                this.Hide();
             }
         }
 
@@ -216,6 +232,12 @@ namespace WindowsFormsApp2
                     f2.Show();
                     this.Hide();
                 }
+            }
+            if (temprole == "Caterer")
+            {
+                MenuPriceC f = new MenuPriceC(this, controller1, int.Parse(id));
+                f.Show();
+                this.Hide();
             }
         }
 

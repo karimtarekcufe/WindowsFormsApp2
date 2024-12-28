@@ -33,12 +33,12 @@ namespace WindowsFormsApp2
                     dependOnType.Hide();
                     DependOnTypeButton.Hide();
                     break;
-                case "Florist":
+                case "Florists":
                     DependOnTypeButton.Text = "change arrangment";
                     dependOnType.Hide();
                     DependOnTypeButton.Hide();
                     break;
-                case "Photographers":
+                case "Photographer":
                     DependOnTypeButton.Text = "change Camera";
                     dependOnType.Hide();
                     DependOnTypeButton.Hide();
@@ -65,7 +65,7 @@ namespace WindowsFormsApp2
         {
             switch (type)
             {
-                case "Florist":
+                case "Florists":
                     int x = controllerobj.updateArrangmentFlorist(id, DependOnTypeButton.Text);
                     if (x == 0) { MessageBox.Show("Error"); }
                     else
@@ -73,7 +73,7 @@ namespace WindowsFormsApp2
                         MessageBox.Show("Updating arrangment was successful");
                     }
                     break;
-                case "Photographers":
+                case "Photographer":
                     int y = controllerobj.updateCameraPhotographer(id, DependOnTypeButton.Text);
                     if (y == 0) { MessageBox.Show("Error"); }
                     else

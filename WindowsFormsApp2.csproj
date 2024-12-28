@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddMenuOption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddMenuOption.Designer.cs">
+      <DependentUpon>AddMenuOption.cs</DependentUpon>
+    </Compile>
     <Compile Include="cancelrequest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,6 +126,12 @@
       <DependentUpon>addguest.cs</DependentUpon>
     </Compile>
     <Compile Include="PasswordHasher.cs" />
+    <Compile Include="MenuPriceC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenuPriceC.Designer.cs">
+      <DependentUpon>MenuPriceC.cs</DependentUpon>
+    </Compile>
     <Compile Include="showguest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,12 +165,21 @@
     <Compile Include="Remove_Venue.Designer.cs">
       <DependentUpon>Remove_Venue.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewRequestCat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewRequestCat.Designer.cs">
+      <DependentUpon>ViewRequestCat.cs</DependentUpon>
+    </Compile>
     <Compile Include="View_Booking.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View_Booking.Designer.cs">
       <DependentUpon>View_Booking.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AddMenuOption.resx">
+      <DependentUpon>AddMenuOption.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Add_Venue.resx">
       <DependentUpon>Add_Venue.cs</DependentUpon>
     </EmbeddedResource>
@@ -213,6 +234,9 @@
     <EmbeddedResource Include="Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MenuPriceC.resx">
+      <DependentUpon>MenuPriceC.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="showguest.resx">
       <DependentUpon>showguest.cs</DependentUpon>
     </EmbeddedResource>
@@ -236,6 +260,9 @@
     </Compile>
     <EmbeddedResource Include="Remove_Venue.resx">
       <DependentUpon>Remove_Venue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewRequestCat.resx">
+      <DependentUpon>ViewRequestCat.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View_Booking.resx">
       <DependentUpon>View_Booking.cs</DependentUpon>

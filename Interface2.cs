@@ -890,6 +890,27 @@ namespace DBapplication
             }
             return 0;
         }
+
+        public int AddMenuOption(int id, string name ,int price)
+        {
+            string query = $"insert into MenuOption values ({id},'{name}',{price})";
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        public DataTable getCatReq(int id) {
+            string query = $"select * from MenuRequests where CatererID = {id}";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public int changeCatPrice(int id , string name,int price) {
+            string query = $"update MenuOption set Price = {price} where CatererID = {id} AND Fname = '{name}'";
+            return dbMan.ExecuteNonQuery(query);
+        }
+        public DataTable getCatMenu(int id)
+        {
+            string query = $"select* from MenuOption where CatererID =  {id}";
+            return dbMan.ExecuteReader(query);
+        }
     }
 }
 
