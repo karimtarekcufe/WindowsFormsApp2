@@ -14,22 +14,28 @@ namespace WindowsFormsApp2
 {
     public partial class Form3 : Form
     {
+        int id;
+        Form1 f;
         string temprole;
         string username;
         Controller controller1;
 
-        public Form3(Form f ,string role,string name)
+        public Form3(Form1 f ,string role,string name)
         {
             controller1 = new Controller();
             temprole = role;
             username = name;
           
+            f.Hide();
+            controlobj = f.GetController();
+            id = controller1.getID();
             InitializeComponent();
             label5.Text = role;
             label7.Text = name;
             button4.Visible = false;
             button5.Visible = false;
             button6.Visible = false;
+            this.FormClosing += Form3_FormClosing;
             switch (temprole)
             {
                
@@ -60,11 +66,37 @@ namespace WindowsFormsApp2
                 case "Caterer":
                     break;
                 case "Entertainer":
+                    string type = controlobj.EntType(ID);
+                    button1.Text = "view Requests";
+                    switch (type)
+                    {
+                    case "Musician":
+                        label8.Text = "Musician";
+                        button2.Text = "Update info";
+                        button3.Text = "Delete User";
+                        break;
+                    case "Florist":
+                        label8.Text = "Florist";
+                        button2.Text = "Update info";
+                        button3.Text = "Delete User";
+                        break;
+                    case "Photographers":
+                        label8.Text = "Photographers";
+                        button2.Text = "Update info";
+                        button3.Text = "Delete User";
+                        button3.Hide();
+                        break;
+                    }
                     break;
 
 
 
             }
+        }
+
+        public Controller GetController()
+        {
+            return controlobj;
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -96,6 +128,12 @@ namespace WindowsFormsApp2
                 makerequest.Show();
 
             }
+            if (temprole == "Entertainer")
+            {
+                EntRequests f = new EntRequests(this, id);
+                f.Show();
+                this.Hide();
+            }
 
         }
 
@@ -113,7 +151,11 @@ namespace WindowsFormsApp2
                 srequest.Show();
 
             }
-
+            if (temprole == "Entertainer")
+            {
+                UpdateInfoEnt f = new UpdateInfoEnt(this, id, label8.Text);
+                f.Show();
+            }
         }
 
         
@@ -135,6 +177,34 @@ namespace WindowsFormsApp2
                 addguest addguest = new addguest(this, cid);
                 addguest.Show();
 
+            }
+            if(temprole == "Entertainer")
+            {
+                DataTable dt = controlobj.getDateEnt(id);
+                //DataTable dt2 = controlobj.getStatusEnt(id);
+                bool cannotDel = false;
+                DateTime currentDate = DateTime.Now;
+                if (dt == null)
+                {
+                    break;
+                }
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    if (currentDate > (DateTime)(dt.Rows[i][0]))
+                    {
+                        cannotDel = true;
+                    }
+                }
+                if (cannotDel)
+                {
+                    MessageBox.Show("Cannot delete Enterainer till he finishes all request");
+                }
+                else
+                {
+                    DeleteEnt f2 = new DeleteEnt(this, id, label5.Text);
+                    f2.Show();
+                    this.Hide();
+                }
             }
         }
 
@@ -183,6 +253,10 @@ namespace WindowsFormsApp2
                 cancel.Show();
 
             }
+        }
+        private void Form3_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            f.Show();
         }
     }
 }

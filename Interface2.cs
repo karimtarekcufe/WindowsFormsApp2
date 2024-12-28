@@ -1,7 +1,9 @@
 ﻿using Microsoft.VisualBasic;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
@@ -14,7 +16,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace DBapplication
 {
-    internal class Controller
+    public class Controller
     {
         DBManager dbMan;
         public Controller()
@@ -33,7 +35,27 @@ namespace DBapplication
 
         
 
-        
+        ///
+        //public DataTable getID(string username, string password)
+        //{
+        //    string query = $"SELECT ID FROM UserData WHERE Password = '{password}' and username='{username}'";
+        //    return dbMan.ExecuteReader(query);
+
+        //}
+
+        public string EntType(int ID)
+        {
+            string query = $"SELECT TYPE FROM Entertainers WHERE ID = {ID}";
+            return (string)dbMan.ExecuteScalar(query);
+        }
+
+
+
+        public int checkusername(string text)
+        {
+            string query = $"SELECT count(UserName) FROM UserData WHERE UserName = '{text}'";
+            return (int)dbMan.ExecuteScalar(query);
+
 
         public DataTable selectgenre()
         {
@@ -618,6 +640,258 @@ namespace DBapplication
 
     }
 
+        public DataTable ViewBookEnt(int id)
+        {
+            string query = $"SELECT RequestID,Type as Status FROM EntertainmentRequest WHERE EntertainersID = {id}";
+            return dbMan.ExecuteReader(query);
+        }
+
+        // the one below got changed
+        public DataTable GetRequestIDFromEntReq(int id)
+        {
+            string query = $"SELECT RequestID , Type AS Status FROM EntertainmentRequest WHERE EntertainersID = {id}";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public int approveRequestEnt(int reqID)
+        {
+            string query = "UPDATE EntertainmentRequest SET Type = 'approve' WHERE RequestID = " + reqID;
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        public int denyRequestEnt(int reqID)
+        {
+            string query = "UPDATE EntertainmentRequest SET Type = 'deny' WHERE RequestID = " + reqID;
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        public int updatePriceEnt(int reqID, int price)
+        {
+            string query = $"UPDATE Entertainers SET Price_Per_Hour = '{price}' WHERE ID = {reqID}";
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        public int updateArrangmentFlorist(int reqID, string arrangment)
+        {
+            string query = $"UPDATE Florists SET Arrangement = '{arrangment}' WHERE EntertainerID = {reqID}";
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        public int updateCameraPhotographer(int reqID, string camera)
+        {
+            string query = $"UPDATE Photographer set Camera = '{camera}' WHERE EntertainerID = {reqID} ";
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        //public int deleteEnt(int id) {
+        //    string query = $"DELETE FROM Entertainers WHERE ID = {id}";
+        //    return dbMan.ExecuteNonQuery(query);
+        //}
+
+        public DataTable getDateEnt(int id)
+        {
+            string query = $"SELECT Date FROM Request WHERE ID  IN (SELECT RequestID FROM EntertainmentRequest WHERE EntertainersID = {id})";
+            return dbMan.ExecuteReader(query);
+        }
+
+
+
+        public DataTable getUpcomingReqLtoH()
+        {
+            DateTime currentDate = DateTime.Now;
+            string query = $"SELECT * FROM Request WHERE Date > '{currentDate}'  order by Price ASC;";
+            return dbMan.ExecuteReader(query);
+        }
+        public DataTable getUpcomingReqHtoL()
+        {
+            DateTime currentDate = DateTime.Now;
+            string query = $"SELECT * FROM Request WHERE Date > '{currentDate}'  order by Price DESC;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public DataTable getAlreadyDoneLtoHReq()
+        {
+            DateTime currentDate = DateTime.Now;
+            string query = $"SELECT * FROM Request WHERE Date < '{currentDate}'  order by Price ASC;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public DataTable getAlreadyDoneHtoLReq()
+        {
+            DateTime currentDate = DateTime.Now;
+            string query = $"SELECT * FROM Request WHERE Date < '{currentDate}'  order by Price DESC;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public int getMaxPrice()
+        {
+            string query = $"SELECT MAX(Price) FROM Request ";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+
+        public int getMinPrice()
+        {
+            string query = $"SELECT Min(Price) FROM Request ";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+
+        public int getAvgPrice()
+        {
+            string query = $"SELECT AVG(Price) FROM Request ";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+
+        public DataTable getPriceLtoHEnt()
+        {
+            string query = $"Select * from Entertainers order by Price_Per_Hour ASC;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public DataTable getPriceHtoLEnt()
+        {
+            string query = $"Select * from Entertainers order by Price_Per_Hour DESC;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public DataTable getMinEntPriceDT()
+        {
+            string query = $"select Type , MIN(Price_Per_Hour) as Price from Entertainers group by Type order by Price asc;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public DataTable getMaxEntPriceDT()
+        {
+            string query = $"select Type , MAX(Price_Per_Hour) as Price from Entertainers group by Type order by Price asc;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public DataTable getAvgEntPriceDT()
+        {
+            string query = $"select Type , AVG(Price_Per_Hour) as Price from Entertainers group by Type order by Price asc;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public int GetTotalPriceReq()
+        {
+            string query = $"select sum(price) from Request;";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+
+        public int getAvgEntPrice()
+        {
+            string query = "select AVG(Price_Per_Hour) as Price from Entertainers ;";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+
+        public int getMinEntPrice()
+        {
+            string query = "select MIN(Price_Per_Hour) as Price from Entertainers ;";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+
+        public int getMaxEntPrice()
+        {
+            string query = "select MAX(Price_Per_Hour) as Price from Entertainers ;";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+
+        public DataTable getHallCapHtoL()
+        {
+            string query = "select * from HallProvider order by Capacity DESC;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public DataTable getHallCapLtoH()
+        {
+            string query = "select * from HallProvider order by Capacity ASC;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public DataTable getHallSizeLtoH()
+        {
+            string query = "select * from HallProvider order by Size ASC;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public DataTable getHallSizeHtoL()
+        {
+            string query = "select * from HallProvider order by Size DESC;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public int getHallSizeMaxAdmin()
+        {
+            string query = "select max(size) from HallProvider;";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+        public int getHallSizeMinAdmin()
+        {
+            string query = "select min(size) from HallProvider;";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+        public int getHallSizeAvgAdmin()
+        {
+            string query = "select avg(size) from HallProvider;";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+
+        public int getHallCapMaxAdmin()
+        {
+            string query = "select max(Capacity) from HallProvider;";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+
+        public int getHallCapMinAdmin()
+        {
+            string query = "select min(Capacity) from HallProvider;";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+        public int getHallCapAvgAdmin()
+        {
+            string query = "select avg(Capacity) from HallProvider;";
+            return Convert.ToInt32(dbMan.ExecuteScalar(query));
+        }
+
+        public DataTable GetTransRatingLtoH()
+        {
+
+            string query = "select *  from Transportation order by Rating asc;";
+            return dbMan.ExecuteReader(query);
+        }
+        public DataTable GetTransRatingHtoL()
+        {
+
+            string query = "select *  from Transportation order by Rating DESC;";
+            return dbMan.ExecuteReader(query);
+        }
+
+        //public DataTable getStatusEnt(int id)
+        //{
+        //    string query = $"SELECT Type from EntertainmentRequest where EntertainersID = {id};";
+        //    return dbMan.ExecuteReader(query);
+        //}
+
+        public int deleteEnt(int id, string type)
+        {
+            string query;
+            switch (type)
+            {
+                case "Musician":
+                    query = $"DELETE FROM Musician WHERE EntertainerID = {id}";
+                    return dbMan.ExecuteNonQuery(query);
+                    break;
+                case "Florists":
+                    query = $"DELETE FROM Florists WHERE EntertainerID = {id}";
+                    return dbMan.ExecuteNonQuery(query);
+                    break;
+                case "Photographer":
+                    query = $"DELETE FROM Photographer WHERE EntertainerID = {id}";
+                    return dbMan.ExecuteNonQuery(query);
+                    break;
+            }
+            return 0;
+        }
+    }
 }
 
 
