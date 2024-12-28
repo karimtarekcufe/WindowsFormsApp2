@@ -23,6 +23,7 @@ namespace WindowsFormsApp2
         DataTable dt4;
         DataTable dt5;
         int cid;
+        int tempreqid;
 
 
 
@@ -229,11 +230,13 @@ namespace WindowsFormsApp2
 
         private void button1_Click(object sender, EventArgs e)
         {
+            int price = 0;
             if (string.IsNullOrEmpty(comboBox5.Text))
             {
                 MessageBox.Show("please fill hall name");
                 return;
             }
+
             if (string.IsNullOrEmpty(textBox1.Text) && string.IsNullOrEmpty(textBox2.Text))
             {
                 MessageBox.Show("please fill date and time");
@@ -251,6 +254,11 @@ namespace WindowsFormsApp2
             if (!IsValidDate(textBox3.Text))
             {
                 MessageBox.Show("the string is not a valid date in yyyy-MM-dd format.");
+                return;
+            }
+            if (string.IsNullOrEmpty(comboBox1.Text)){
+
+                MessageBox.Show("please enter payment method");
                 return;
             }
 
@@ -289,8 +297,18 @@ namespace WindowsFormsApp2
                 if (result == DialogResult.Yes)
                 {
                     int reqid = controller1.inssertrequest(cid, textBox1.Text, textBox2.Text, hallid, provid, textBox3.Text, originalprice);
-                    int failures = serveallrequests(reqid, 0);
-                    MessageBox.Show($"request is done with {failures} failures");
+                    price += originalprice;
+                    int pricer = serveallrequests(reqid, 0,price);
+                    MessageBox.Show($"request is done with price={pricer}");
+                    switch (comboBox1.SelectedIndex)
+                    {
+                        case 0:
+                            
+                            PaymentForm p = new PaymentForm(this,pricer,reqid);
+                            p.Show();
+                                break;
+
+                    }
                     MessageBox.Show($"view grid for details and press close request to close" +
                         $"for delete access your homepage");
                 }
@@ -311,7 +329,7 @@ namespace WindowsFormsApp2
                 System.Globalization.DateTimeStyles.None,
                 out _);
         }
-        public int serveallrequests(int id, int failure)
+        public int serveallrequests(int id, int failure,int price)
         {
             if (dt1 != null && dt1.Rows.Count > 0)
             {
@@ -322,11 +340,14 @@ namespace WindowsFormsApp2
                     DateTime date1 = Convert.ToDateTime(date.Rows[0][0]).Date;
                     string musician = row["Genre"].ToString();
                     DataTable musiciandt = controller1.selectappropriatemusician(musician, Convert.ToString(date1));
-                    if (musiciandt != null)
+                        if (musiciandt != null)
                     {
                         if (musiciandt.Rows.Count > 0)
                         {
                             controller1.insertMusician(id, Convert.ToString(musiciandt.Rows[0][0]));
+                            price += Convert.ToInt32(controller1.GetEntertainerPriceData(Convert.ToString(musiciandt.Rows[0][0]), Convert.ToString(id)).Rows[0][0]);
+
+
                         }
                         else
                         {
@@ -353,8 +374,11 @@ namespace WindowsFormsApp2
 
                     if (photographerDt.Rows.Count > 0)
                     {
+
                         // Assign photographer to the request
                         controller1.insertPhotographer(id, Convert.ToString(photographerDt.Rows[0]["PhotographerID"]));
+                        price += Convert.ToInt32(controller1.GetEntertainerPriceData(Convert.ToString(photographerDt.Rows[0][0]), Convert.ToString(id)).Rows[0][0]);
+
                     }
                     else
                     {
@@ -383,6 +407,8 @@ namespace WindowsFormsApp2
 
                         // Call a controller method to insert into TransportationRequest
                         controller1.insertTransportationRequest(Convert.ToString(id), transportationId);
+                        price += Convert.ToInt32(controller1.calcpricetransport(Convert.ToString(transportationId), Convert.ToString(id)).Rows[0][0]);
+
                     }
                     else
                     {
@@ -419,6 +445,8 @@ namespace WindowsFormsApp2
                         string catererId = result.Rows[0]["CatererID"].ToString();
 
                         controller1.insertFoodMenuRequest(id.ToString(), foodMenu, catererId,quantity);
+                        price += Convert.ToInt32(controller1.calcpricefood(Convert.ToString(catererId), Convert.ToString(foodMenu), Convert.ToString(id)).Rows[0][0]);
+
                     }
                     else
                     {
@@ -446,7 +474,10 @@ namespace WindowsFormsApp2
 
                     if (floristDt != null || floristDt.Rows.Count > 0)
                     {
+
                         controller1.insertFlorist(id, Convert.ToString(floristDt.Rows[0]["EntertainerID"]));
+                        price += Convert.ToInt32(controller1.GetEntertainerPriceData(Convert.ToString(floristDt.Rows[0][0]), Convert.ToString(id)).Rows[0][0]);
+
                     }
                     else
                     {
@@ -458,7 +489,11 @@ namespace WindowsFormsApp2
                     }
                 }
             }
-            return failure;
+            controller1.modifyprice(price, id);
+            controller1.modifyduepayment(price, id);
+
+
+            return price;
         }
 
 
@@ -495,6 +530,13 @@ namespace WindowsFormsApp2
         {
 
         }
+
+
+
+
+
+
+
     }
     }
 

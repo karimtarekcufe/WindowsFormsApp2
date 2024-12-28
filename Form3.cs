@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -30,6 +31,7 @@ namespace WindowsFormsApp2
             button4.Visible = false;
             button5.Visible = false;
             button6.Visible = false;
+            button7.Visible = true;
             switch (temprole)
             {
                
@@ -45,7 +47,9 @@ namespace WindowsFormsApp2
                     button5.Text = "delete from guest list";
                     button6.Visible = true;
                     button6.Text = "cancel request";
-
+                    button7.Visible = true;
+                    button7.Text = "modify requst"; ;
+                    
 
 
                     break;
@@ -183,6 +187,19 @@ namespace WindowsFormsApp2
                 cancel.Show();
 
             }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            int cid = selectcid();
+
+            if (temprole == "Customer")
+            {
+                modifyrequest modify = new modifyrequest(this, cid);
+                modify.Show();
+
+            }
+
         }
     }
 }

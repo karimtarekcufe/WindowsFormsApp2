@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
@@ -231,42 +232,80 @@ namespace DBapplication
 
         public DataTable getaalunservedrequests(int cid)
         {
-            string query = "SELECT r.ID AS RequestID, " +
-                   "c.Name AS CustomerName, " +
-                   "e.Name AS EntertainerName, er.Type, h.HallName, r.Date " +
-                   "FROM Request r " +
-                   "JOIN Customers c ON r.CustomerID = c.ID " +
-                   "JOIN HallProvider h ON r.HallID = h.HallID AND r.ProvID = h.ProvID " +
-                   "JOIN EntertainmentRequest er ON r.ID = er.RequestID " +
-                   "JOIN Entertainers e ON er.EntertainersID = e.ID " +
-                   "LEFT JOIN Musician m ON e.ID = m.EntertainerID " +
-                   "LEFT JOIN Florists f ON e.ID = f.EntertainerID " +
-                   "LEFT JOIN Photographer p ON e.ID = p.EntertainerID " +
-                   $"WHERE c.ID = '{cid}' " +
-                   "AND r.HallID = h.HallID " +
-                   "AND r.ProvID = h.ProvID " +
-                   "AND r.Date >= GETDATE()";
+            string query = @"
+    SELECT 
+        r.ID AS RequestID, 
+        CASE WHEN e.Name IS NULL THEN 'No Entertainer' ELSE e.Name END AS EntertainerName, 
+        CASE WHEN er.Type IS NULL THEN 'No Entertainer Type' ELSE er.Type END AS EntertainerType, 
+        h.HallName, 
+        r.Date AS RequestDate,
+        CASE WHEN mo.Fname IS NULL THEN 'No Menu Option' ELSE mo.Fname END AS MenuOption, 
+        CASE WHEN mr.Quantity IS NULL THEN 0 ELSE mr.Quantity END AS MenuQuantity, 
+        CASE WHEN t.Type IS NULL THEN 'No Transportation' ELSE t.Type END AS TransportationType, 
+        CASE WHEN t.ID IS NULL THEN 'No Transportation ID' ELSE CAST(t.ID AS VARCHAR) END AS TransportationID
+    FROM 
+        Request r
+    JOIN 
+        Customers c ON r.CustomerID = c.ID
+    JOIN 
+        HallProvider h ON r.HallID = h.HallID AND r.ProvID = h.ProvID
+    LEFT JOIN 
+        EntertainmentRequest er ON r.ID = er.RequestID
+    LEFT JOIN 
+        Entertainers e ON er.EntertainersID = e.ID
+    LEFT JOIN 
+        MenuRequests mr ON r.ID = mr.RequestID
+    LEFT JOIN 
+        MenuOption mo ON mr.CatererID = mo.CatererID AND mr.Fname = mo.Fname
+    LEFT JOIN 
+        transportaionrequest tr ON r.ID = tr.requestid
+    LEFT JOIN 
+        Transportation t ON tr.Tid = t.ID
+    WHERE 
+        c.ID = '2'
+        AND r.Date >= GETDATE();
+";
+
             return dbMan.ExecuteReader(query);
 
 
         }
         public DataTable getaalservedrequests(int cid)
         {
-            string query = "SELECT r.ID AS RequestID, " +
-                   "c.Name AS CustomerName, " +
-                   "e.Name AS EntertainerName, er.Type, h.HallName, r.Date " +
-                   "FROM Request r " +
-                   "JOIN Customers c ON r.CustomerID = c.ID " +
-                   "JOIN HallProvider h ON r.HallID = h.HallID AND r.ProvID = h.ProvID " +
-                   "JOIN EntertainmentRequest er ON r.ID = er.RequestID " +
-                   "JOIN Entertainers e ON er.EntertainersID = e.ID " +
-                   "LEFT JOIN Musician m ON e.ID = m.EntertainerID " +
-                   "LEFT JOIN Florists f ON e.ID = f.EntertainerID " +
-                   "LEFT JOIN Photographer p ON e.ID = p.EntertainerID " +
-                   $"WHERE c.ID = '{cid}' " +
-                   "AND r.HallID = h.HallID " +
-                   "AND r.ProvID = h.ProvID " +
-                   "AND r.Date < GETDATE()";
+            string query = @"
+    SELECT 
+        r.ID AS RequestID, 
+        CASE WHEN e.Name IS NULL THEN 'No Entertainer' ELSE e.Name END AS EntertainerName, 
+        CASE WHEN er.Type IS NULL THEN 'No Entertainer Type' ELSE er.Type END AS EntertainerType, 
+        h.HallName, 
+        r.Date AS RequestDate,
+        CASE WHEN mo.Fname IS NULL THEN 'No Menu Option' ELSE mo.Fname END AS MenuOption, 
+        CASE WHEN mr.Quantity IS NULL THEN 0 ELSE mr.Quantity END AS MenuQuantity, 
+        CASE WHEN t.Type IS NULL THEN 'No Transportation' ELSE t.Type END AS TransportationType, 
+        CASE WHEN t.ID IS NULL THEN 'No Transportation ID' ELSE CAST(t.ID AS VARCHAR) END AS TransportationID
+    FROM 
+        Request r
+    JOIN 
+        Customers c ON r.CustomerID = c.ID
+    JOIN 
+        HallProvider h ON r.HallID = h.HallID AND r.ProvID = h.ProvID
+    LEFT JOIN 
+        EntertainmentRequest er ON r.ID = er.RequestID
+    LEFT JOIN 
+        Entertainers e ON er.EntertainersID = e.ID
+    LEFT JOIN 
+        MenuRequests mr ON r.ID = mr.RequestID
+    LEFT JOIN 
+        MenuOption mo ON mr.CatererID = mo.CatererID AND mr.Fname = mo.Fname
+    LEFT JOIN 
+        transportaionrequest tr ON r.ID = tr.requestid
+    LEFT JOIN 
+        Transportation t ON tr.Tid = t.ID
+    WHERE 
+        c.ID = '2'
+        AND r.Date < GETDATE();
+";
+
             return dbMan.ExecuteReader(query);
 
 
@@ -292,10 +331,10 @@ namespace DBapplication
             return dbMan.ExecuteReader(query);
         }
 
-        public int addtoguestlist(string text1, string text2, string text3,string text4)
+        public int addtoguestlist(string text1, string text2, string text3, string text4)
         {
             string query = $"INSERT INTO GuestList (RequestID, GuestName, Phone, Address)\r\nVALUES\r\n    ('{text1}', '{text2}', '{text3}', '{text4}')\r\n  \r\n  ";
-                return dbMan.ExecuteNonQuery(query);
+            return dbMan.ExecuteNonQuery(query);
 
 
 
@@ -380,7 +419,7 @@ namespace DBapplication
             return dbMan.ExecuteReader(query);
         }
 
-        public bool insertFoodMenuRequest(string requestId, string foodName, string catererId,string quantity)
+        public bool insertFoodMenuRequest(string requestId, string foodName, string catererId, string quantity)
         {
             string query = $"INSERT INTO MenuRequests (RequestID, Fname, CatererID,quantity) VALUES ('{requestId}', '{foodName}', '{catererId}','{quantity}')";
             return dbMan.ExecuteNonQuery(query) > 0;
@@ -398,7 +437,7 @@ namespace DBapplication
         }
         public DataTable getRequestsforhall(string id)
         {
-            string query = "SELECT Request.ID, HallProvider.HallName ,Request.HallApproved, HallProvider.Location , Request.StartTime , Request.EndTime , Request.Date ,Customers.Name,Customers.Telephone\r\nFROM Request , HallProvider , Customers\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND Customers.ID=Request.CustomerID AND HallProvider.ProvID = '" + id+"'";
+            string query = "SELECT Request.ID, HallProvider.HallName ,Request.HallApproved, HallProvider.Location , Request.StartTime , Request.EndTime , Request.Date ,Customers.Name,Customers.Telephone\r\nFROM Request , HallProvider , Customers\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND Customers.ID=Request.CustomerID AND HallProvider.ProvID = '" + id + "'";
             return dbMan.ExecuteReader(query);
         }
         public DataTable getID(string username)
@@ -412,30 +451,30 @@ namespace DBapplication
             DateTime now = DateTime.Now;
             string formattedDate = now.ToString("yyyy-MM-dd");
 
-            string query = "SELECT Request.ID, HallProvider.HallName , Request.HallApproved , HallProvider.Location , Request.StartTime , Request.EndTime , Request.Date ,Customers.Name,Customers.Telephone\r\nFROM Request , HallProvider , Customers\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND Customers.ID=Request.CustomerID AND HallProvider.ProvID = '"+id+"' AND Request.Date>='"+formattedDate+"' ";
+            string query = "SELECT Request.ID, HallProvider.HallName , Request.HallApproved , HallProvider.Location , Request.StartTime , Request.EndTime , Request.Date ,Customers.Name,Customers.Telephone\r\nFROM Request , HallProvider , Customers\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND Customers.ID=Request.CustomerID AND HallProvider.ProvID = '" + id + "' AND Request.Date>='" + formattedDate + "' ";
             return dbMan.ExecuteReader(query);
         }
 
-        public int insertHall(string id,string name, string location , string capacity ,string price,  string size = "0")
+        public int insertHall(string id, string name, string location, string capacity, string price, string size = "0")
         {
-            string query = " INSERT INTO HallProvider ( ProvID, HallName, Location, Capacity,bookingpriceday, Size)\r\nVALUES ('" + id + "', '" + name + "', '" + location + "', '" + capacity + "','"+price+"', '" + size + "');\r\n";
+            string query = " INSERT INTO HallProvider ( ProvID, HallName, Location, Capacity,bookingpriceday, Size)\r\nVALUES ('" + id + "', '" + name + "', '" + location + "', '" + capacity + "','" + price + "', '" + size + "');\r\n";
             return dbMan.ExecuteNonQuery(query);
         }
         public DataTable TablesToDelete(string id)
         {
             DateTime now = DateTime.Now;
             string formattedDate = now.ToString("yyyy-MM-dd");
-            string query = "SELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND HallProvider.ProvID= '"+id+"' AND Request.Date<'"+formattedDate+ "' union\r\nSELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE   Request.HallID != HallProvider.HallID";
+            string query = "SELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE Request.ProvID = HallProvider.ProvID AND Request.HallID = HallProvider.HallID AND HallProvider.ProvID= '" + id + "' AND Request.Date<'" + formattedDate + "' union\r\nSELECT HallProvider.HallName , HallProvider.HallID\r\nFROM HallProvider , Request\r\nWHERE   Request.HallID != HallProvider.HallID";
             return dbMan.ExecuteReader(query);
         }
-        public int removeHall(string id , string hallid)
+        public int removeHall(string id, string hallid)
         {
-            string query = "Delete  from HallProvider where HallID = '"+hallid+"' and ProvID = '"+id+"'\r\n";
+            string query = "Delete  from HallProvider where HallID = '" + hallid + "' and ProvID = '" + id + "'\r\n";
             return dbMan.ExecuteNonQuery(query);
         }
-        public int ApproveRequest( string RequestID)
+        public int ApproveRequest(string RequestID)
         {
-            string query = "UPDATE Request SET HallApproved='Y' WHERE ID='"+RequestID+"'";
+            string query = "UPDATE Request SET HallApproved='Y' WHERE ID='" + RequestID + "'";
             return dbMan.ExecuteNonQuery(query);
         }
 
@@ -473,44 +512,45 @@ namespace DBapplication
         }
         public int deletetransportationrequest(string tid, string requestId)
         {
-            string query = $"DELETE FROM transportaionrequest WHERE Tid = '{tid}' AND RequestID = '{requestId}';";
+            string query = $"DELETE FROM transportaionrequest WHERE Tid = '{requestId}' AND RequestID = '{tid}';";
             return dbMan.ExecuteNonQuery(query);
         }
 
 
-        public DataTable getHalls(string id){
+        public DataTable getHalls(string id)
+        {
             string query = "SELECT HallProvider.HallName , HallProvider.HallID , HallProvider.Capacity ,HallProvider.Size , HallProvider.bookingpriceday " +
                 "FROM HallProvider " +
-                "WHERE HallProvider.ProvID='"+id+"'";
+                "WHERE HallProvider.ProvID='" + id + "'";
             return dbMan.ExecuteReader(query);
         }
-        public DataTable getHallToUpdate(string id , string hallid)
+        public DataTable getHallToUpdate(string id, string hallid)
         {
             string query = "SELECT HallProvider.HallName , HallProvider.Capacity ,HallProvider.Size , HallProvider.bookingpriceday " +
                 " FROM HallProvider " +
                 " WHERE HallProvider.ProvID ='" + id + "' AND HallProvider.HallID = '" + hallid + "'";
             return dbMan.ExecuteReader(query);
         }
-        public int insertTransport(string type , string serving ,string price,string provid , string hallid )
+        public int insertTransport(string type, string serving, string price, string provid, string hallid)
         {
             string query = "DECLARE @NewID INT; " +
                 "INSERT INTO Transportation (Type, Serving_Location , Price) " +
-                "VALUES ('"+type+"', '"+serving+"' , '"+price+"'); " +
+                "VALUES ('" + type + "', '" + serving + "' , '" + price + "'); " +
                 "SET @NewID = SCOPE_IDENTITY(); " +
                 "SELECT @NewID AS NewIdentityValue;";
-            object identity =  dbMan.ExecuteScalar(query);
+            object identity = dbMan.ExecuteScalar(query);
 
             query = "INSERT INTO HallProviderTransportation (ProvID , HallID , TransportationID) " +
-                "VALUES ('" + provid + "' ,'" + hallid +"' , '"+identity.ToString()+"')";
+                "VALUES ('" + provid + "' ,'" + hallid + "' , '" + identity.ToString() + "')";
 
             return dbMan.ExecuteNonQuery(query);
         }
-        public DataTable getTransportToDelete(string ProvID , string HallID)
+        public DataTable getTransportToDelete(string ProvID, string HallID)
         {
             string query = "SELECT Transportation.ID , Transportation.Type , Transportation.Serving_Location , Transportation.Rating , Transportation.Price " +
                 "FROM HallProviderTransportation , Transportation " +
                 "WHERE\tTransportation.ID = HallProviderTransportation.TransportationID " +
-                "AND HallProviderTransportation.ProvID = '"+ProvID+"' AND HallProviderTransportation.HallID = '"+HallID+"' ";
+                "AND HallProviderTransportation.ProvID = '" + ProvID + "' AND HallProviderTransportation.HallID = '" + HallID + "' ";
             return dbMan.ExecuteReader(query);
         }
         public int DeleteTransport(string TransportID)
@@ -520,16 +560,74 @@ namespace DBapplication
                 "WHERE Transportation.ID = '" + TransportID + "'";
             return dbMan.ExecuteNonQuery(query);
         }
-        public int UpdateVenueData(string id , string hallid , string name , string capacity , string size , string price)
+        public int UpdateVenueData(string id, string hallid, string name, string capacity, string size, string price)
         {
             string query = $"UPDATE HallProvider " +
                 $"SET HallName = '" + name + "', Capacity = '" + capacity + "', " +
                 "  Size = '" + size + "',   " +
                 " bookingpriceday = '" + price + "' " +
                 "WHERE  HallID = '" + hallid + "' AND ProvID = '" + id + "';";
-            return dbMan.ExecuteNonQuery(query);    
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        public DataTable gethallreqid(string v)
+        {
+            string query = $"SELECT HallID FROM request r WHERE r.ID = '{v}'";
+
+            return dbMan.ExecuteReader(query);
+
+        }
+
+        public DataTable GetEntertainerPriceData(string entertainerId, string requestId)
+        {
+            string query = $"SELECT e.Price_Per_Hour * DATEDIFF(HOUR, CAST(r.StartTime AS DATETIME), CAST(r.EndTime AS DATETIME)) AS TotalCost " +
+                           "FROM EntertainmentRequest er " +
+                           "JOIN Entertainers e ON er.EntertainersID = e.ID " +
+                           "JOIN Request r ON r.ID = er.RequestID " +
+                           $"WHERE e.ID = '{entertainerId}' AND r.ID = '{requestId}'";
+
+
+            // Execute the query and load the result into the DataTable
+            return dbMan.ExecuteReader(query);
+
+
+
+
+
+        }
+        public DataTable calcpricefood(string catererId, string foodMenu, string requestId)
+        {
+            string query = $"SELECT m.Price * mr.Quantity FROM MenuRequests mr, MenuOption m, Request r WHERE mr.RequestID = r.ID AND r.ID = '{requestId}' AND m.Fname = '{foodMenu}' AND m.CatererID = '{catererId}'";
+            return dbMan.ExecuteReader(query);
+        }
+        public DataTable calcpricetransport(string transportationId, string requestId)
+        {
+            string query = $"SELECT t.price " +
+                           $"FROM Transportation t, transportaionrequest tr, request r " +
+                           $"WHERE tr.requestid = r.ID " +
+                           $"AND r.id = '{requestId}' " +
+                           $"AND t.Id = '{transportationId}'";
+            return dbMan.ExecuteReader(query);
+        }
+
+        public int modifyprice(int price,int id)
+        {
+            string query = $"update request \r\nset price='{price}' \r\nwhere id='{id}'";
+            return dbMan.ExecuteNonQuery(query);
+        }
+        public int modifyduepayment(int price, int id)
+        {
+            string query = $"update request \r\nset duepayment='{price}' \r\nwhere id='{id}'";
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        public int deductpayment(int reqid, decimal amount)
+        {
+            string query = $"update request \r\nset duepayment=duepayment-'{amount}' \r\nwhere id='{reqid}'";
+            return dbMan.ExecuteNonQuery(query);
         }
     }
+
 }
 
 

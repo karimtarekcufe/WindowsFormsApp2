@@ -156,6 +156,7 @@ namespace WindowsFormsApp2
                     break;
                 case 4:
                     if (!string.IsNullOrEmpty(comboBox1.Text) && !string.IsNullOrEmpty(comboBox2.Text)) {
+                       
                         int res3 = cont1.deletefoodrequest(comboBox2.Text, Convert.ToString(comboBox3.SelectedValue),Convert.ToString(comboBox3.Text));
                         if (res3> 0)
                         {
@@ -179,7 +180,7 @@ namespace WindowsFormsApp2
                         int res4 = cont1.deletetransportationrequest(comboBox2.Text, Convert.ToString(comboBox3.SelectedValue));
                         if (res4 > 0)
                         {
-                            MessageBox.Show("sucessfull deletion of food ");
+                            MessageBox.Show("sucessfull deletion of transportation ");
                         }
                     }
                     else
@@ -241,7 +242,7 @@ namespace WindowsFormsApp2
 
                     comboBox3.Enabled = true;
                     comboBox3.DataSource = cont1.selectallridfood(comboBox2.Text);
-                    comboBox3.ValueMember = "Fname";
+                    comboBox3.ValueMember = "CatererID";
                     comboBox3.DisplayMember = "Fname";
 
                     break;
