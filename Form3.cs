@@ -23,7 +23,7 @@ namespace WindowsFormsApp2
             controller1 = new Controller();
             temprole = role;
             username = name;
-            f.Hide();
+          
             InitializeComponent();
             label5.Text = role;
             label7.Text = name;

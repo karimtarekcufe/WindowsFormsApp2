@@ -25,31 +25,15 @@ namespace DBapplication
 
         /**/
 
-        public int checkpasssword(string username, string password)
-        {
-            string query = $"SELECT count(Password) FROM UserData WHERE Password = '{password}' and username='{username}'";
-            return (int)dbMan.ExecuteScalar(query);
-
-        }
+       
         public void TerminateConnection()
         {
             dbMan.CloseConnection();
         }
 
-        public DataTable selectroles(string username, string password)
-        {
-            string query = $"SELECT Role,username FROM UserData WHERE Password = '{password}' and username='{username}'";
-            return dbMan.ExecuteReader(query);
+        
 
-        }
-
-        public int checkusername(string text)
-        {
-            string query = $"SELECT count(UserName) FROM UserData WHERE UserName = '{text}'";
-            return (int)dbMan.ExecuteScalar(query);
-
-
-        }
+        
 
         public DataTable selectgenre()
         {
@@ -456,7 +440,7 @@ namespace DBapplication
         {
             string query = $"delete from request where id='{rid}'";
 
-            return (int)dbMan.ExecuteScalar(query);
+            return dbMan.ExecuteNonQuery(query);
         }
 
         public int deleteentertainementrequest(string requestId, string entertainerId)
@@ -529,7 +513,111 @@ namespace DBapplication
                 "WHERE  HallID = '" + hallid + "' AND ProvID = '" + id + "';";
             return dbMan.ExecuteNonQuery(query);    
         }
+
+        //AbdelRahman Functions
+        public int checkpasssword(string username, string password)
+        {
+            string query = $"SELECT count(Password) FROM UserData WHERE Password = '{password}' and username='{username}'";
+            return (int)dbMan.ExecuteScalar(query);
+
+        }
+
+
+        public DataTable selectroles(string username, string password)
+        {
+            string query = $"SELECT Role,username FROM UserData WHERE Password = '{password}' and username='{username}'";
+            return dbMan.ExecuteReader(query);
+
+        }
+
+        public int checkusername(string text)
+        {
+            string query = $"SELECT count(UserName) FROM UserData WHERE UserName = '{text}'";
+            return (int)dbMan.ExecuteScalar(query);
+
+
+        }
+
+        public int InsertUserData(string username, string password, string role)
+        {
+            DateTime signUpDate = DateTime.Now;
+            string query = $"INSERT INTO UserData(UserName,Password,Role,SignUpDate) VALUES ('{username}' , '{password}' , '{role}','{signUpDate}') ;";
+            // string query = $"INSERT INTO UserData(UserName,Password,Role,SignUpDate) VALUES ('{username}' , '{password}' , '{role}',GETDATE() ;";
+
+            return dbMan.ExecuteNonQuery(query);
+        }
+        public int InsertHallProvider(int provid, string hallname, string location, int capacity, int size ,  string price)
+        {
+            string query = $"INSERT INTO HallProvider(ProvID , HallName , Location , Capacity ,Size , bookingpriceday) VALUES ('{provid}','{hallname}','{location}','{capacity}','{size}' , '{price}') ;";
+
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        public int InsertPayment(string ccn, string cvv, string expirydate)
+        {
+            string query = $"INSERT INTO Payment VALUES ('{ccn}','{cvv}','{expirydate}') ;";
+
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        public int InsertCustomer(int customerid, string address, int paymentid, decimal budget, string name, string telephone)
+        {
+            string query = $"INSERT INTO Customers(ID,Address,PaymentID,Budget, Telephone, Name) VALUES ({customerid},'{address}',{paymentid},{budget},'{telephone}','{name}') ;";
+
+            return dbMan.ExecuteNonQuery(query);
+        }
+
+        public int GetLatestUserID()
+        {
+            string query = $"SELECT TOP 1 ID FROM UserData ORDER BY ID DESC;";
+            return (int)dbMan.ExecuteScalar(query);
+        }
+
+        public int GetLatestPaymentID()
+        {
+            string query = $"SELECT TOP 1 ID FROM Payment ORDER BY ID DESC;";
+            return (int)dbMan.ExecuteScalar(query);
+        }
+        public int InsertEntertainer(int userid, string name, string type, int priceperhour)
+        {
+            string query = $"INSERT INTO Entertainers VALUES ({userid},'{name}','{type}',{priceperhour}) ;";
+
+            return dbMan.ExecuteNonQuery(query);
+        }
+        public int InsertFlorist(int entid, string arrangement)
+        {
+            string query = $"INSERT INTO Florists VALUES ({entid},'{arrangement}') ;";
+
+            return dbMan.ExecuteNonQuery(query);
+        }
+        public int InsertPhotographer(int entid, string camera)
+        {
+            string query = $"INSERT INTO Photographer VALUES ({entid},'{camera}') ;";
+
+            return dbMan.ExecuteNonQuery(query);
+        }
+        public int InsertMusician(int entid, string bandname, string genre)
+        {
+            string query = $"INSERT INTO Musician VALUES ({entid},'{bandname}','{genre}') ;";
+
+            return dbMan.ExecuteNonQuery(query);
+        }
+        public int GetLatestEntertainerID()
+        {
+            string query = $"SELECT TOP 1 ID FROM Entertainers ORDER BY ID DESC;";
+            return (int)dbMan.ExecuteScalar(query);
+        }
+        public int CheckExistance(string username)
+        {
+            string query = $"SELECT COUNT(*) FROM UserData WHERE UserName ='{username}';";
+            return (int)dbMan.ExecuteScalar(query);
+
+        }
+
+
+
     }
+
 }
 
 
