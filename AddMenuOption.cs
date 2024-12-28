@@ -46,7 +46,7 @@ namespace WindowsFormsApp2
             int result;
             if (int.TryParse(str, out result) &&  str != "")
             {
-            int x = c.AddMenuOption(id, FName.Text.ToString(), Convert.ToInt32(Price.Text));
+            int x = c.AddMenuOption(id.ToString(),FName.Text, Convert.ToInt32(Price.Text));
                 if (x == 0) { MessageBox.Show("Error in inserting"); }
                 else
                 {

@@ -17,7 +17,7 @@ namespace WindowsFormsApp2
         int cid;
         public showguest(Form3 f,int id)
         {
-            f.Close();
+       
             cont1 = new Controller();
             InitializeComponent();
             cid = id;

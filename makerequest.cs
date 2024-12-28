@@ -36,7 +36,7 @@ namespace WindowsFormsApp2
 
 
 
-            form.Hide();
+           
             InitializeComponent();
             controller1 = new Controller();
             dt = new DataTable();
