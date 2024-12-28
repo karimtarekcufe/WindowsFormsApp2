@@ -19,18 +19,20 @@ namespace WindowsFormsApp2
         string temprole;
         string username;
         Controller controller1;
-        Controller controlobj;
+       
 
         public Form3(Form1 f ,string role,string name)
         {
             controller1 = new Controller();
             temprole = role;
             username = name;
-          
+            this.f = f;
             f.Hide();
-            
-            controlobj = f.GetController();
+           
+           
+           
             id = controller1.getID(username).Rows[0][0].ToString();
+          
             InitializeComponent();
             label5.Text = role;
             label7.Text = name;
@@ -70,7 +72,7 @@ namespace WindowsFormsApp2
                 case "Caterer":
                     break;
                 case "Entertainer":
-                    string type = controlobj.EntType(int.Parse(id));
+                    string type = controller1.EntType(int.Parse(id));
                     button1.Text = "view Requests";
                     label6.Show();
                     label8.Show();
@@ -80,17 +82,20 @@ namespace WindowsFormsApp2
                     case "Musician":
                         label8.Text = "Musician";
                         button2.Text = "Update info";
+                            button2.Enabled = true;
                         button3.Text = "Delete User";
                         break;
                     case "Florist":
                         label8.Text = "Florist";
                         button2.Text = "Update info";
-                        button3.Text = "Delete User";
+                            button2.Enabled = true;
+                            button3.Text = "Delete User";
                         break;
                     case "Photographers":
                         label8.Text = "Photographers";
                         button2.Text = "Update info";
-                        button3.Text = "Delete User";
+                            button2.Enabled = true;
+                            button3.Text = "Delete User";
                         break;
                     }
                     break;
@@ -136,7 +141,7 @@ namespace WindowsFormsApp2
             }
             if (temprole == "Entertainer")
             {
-                EntRequests f = new EntRequests(this, id);
+                EntRequests f = new EntRequests(this, int.Parse(id));
                 f.Show();
                 this.Hide();
             }
@@ -159,7 +164,7 @@ namespace WindowsFormsApp2
             }
             if (temprole == "Entertainer")
             {
-                UpdateInfoEnt f = new UpdateInfoEnt(this, id, label8.Text);
+                UpdateInfoEnt f = new UpdateInfoEnt(this, int.Parse(id), label8.Text);
                 f.Show();
             }
         }
@@ -186,13 +191,13 @@ namespace WindowsFormsApp2
             }
             if(temprole == "Entertainer")
             {
-                DataTable dt = controller1.getDateEnt(id);
+                DataTable dt = controller1.getDateEnt(int.Parse(id));
                 //DataTable dt2 = controlobj.getStatusEnt(id);
                 bool cannotDel = false;
                 DateTime currentDate = DateTime.Now;
                 if (dt == null)
                 {
-                    break;
+                    return;
                 }
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -207,7 +212,7 @@ namespace WindowsFormsApp2
                 }
                 else
                 {
-                    DeleteEnt f2 = new DeleteEnt(this, id, label5.Text);
+                    DeleteEnt f2 = new DeleteEnt(this, int.Parse(id), label5.Text);
                     f2.Show();
                     this.Hide();
                 }

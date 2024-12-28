@@ -46,7 +46,7 @@ namespace DBapplication
         public string EntType(int ID)
         {
             string query = $"SELECT TYPE FROM Entertainers WHERE ID = {ID}";
-            return (string)dbMan.ExecuteScalar(query);
+            return dbMan.ExecuteScalar(query).ToString();
         }
 
 
@@ -872,17 +872,19 @@ namespace DBapplication
             switch (type)
             {
                 case "Musician":
-                    query = $"DELETE FROM Musician WHERE EntertainerID = {id}";
-                    return dbMan.ExecuteNonQuery(query);
-                    break;
+                    {
+                        query = $"DELETE FROM Musician WHERE EntertainerID = {id}";
+                        return dbMan.ExecuteNonQuery(query);
+                      
+                    }
                 case "Florists":
                     query = $"DELETE FROM Florists WHERE EntertainerID = {id}";
                     return dbMan.ExecuteNonQuery(query);
-                    break;
+                    
                 case "Photographer":
                     query = $"DELETE FROM Photographer WHERE EntertainerID = {id}";
                     return dbMan.ExecuteNonQuery(query);
-                    break;
+                    
             }
             return 0;
         }

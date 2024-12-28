@@ -87,9 +87,9 @@ namespace WindowsFormsApp2
                                 {
                                     if (role == "Entertainer")
                                     {
-                                        DataTable dt2 = controller1.getID(textBox1.Text, textBox2.Text);
+                                        DataTable dt2 = controller1.getID(textBox1.Text);
                                         int id = Convert.ToInt32(dt2.Rows[0][0]);
-<<<<<<< HEAD
+//<<<<<<< HEAD
                                         Form3 form3 = new Form3(this, role, username);
 
 //>>>>>>> omar finalpppp
@@ -97,10 +97,10 @@ namespace WindowsFormsApp2
                                     }
                                     else
                                     {
-<<<<<<< HEAD
+//<<<<<<< HEAD
                                         Form3 form3 = new Form3(this, role, username);
-=======
->>>>>>> omar finalpppp
+//=======
+//>>>>>>> omar finalpppp
                                         form3.Show();
                                     }
                                 }
