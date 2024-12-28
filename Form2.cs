@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
+
 namespace WindowsFormsApp2
 {
     public partial class Form2 : Form
@@ -277,8 +278,9 @@ namespace WindowsFormsApp2
                 if (controller1.CheckExistance(textBox1.Text)==0)
                 {
                     string role = comboBox1.SelectedItem.ToString();
-                    bool signed=false;  
-                    controller1.InsertUserData(textBox1.Text, textBox2.Text, role);
+                    bool signed=false;
+                   string pass=  Password.HashPassword(textBox2.Text);
+                    controller1.InsertUserData(textBox1.Text, pass, role);
 
                     switch (role)
                     {

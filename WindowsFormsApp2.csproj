@@ -119,6 +119,7 @@
     <Compile Include="addguest.Designer.cs">
       <DependentUpon>addguest.cs</DependentUpon>
     </Compile>
+    <Compile Include="PasswordHasher.cs" />
     <Compile Include="showguest.cs">
       <SubType>Form</SubType>
     </Compile>

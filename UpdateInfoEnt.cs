@@ -35,9 +35,13 @@ namespace WindowsFormsApp2
                     break;
                 case "Florist":
                     DependOnTypeButton.Text = "change arrangment";
+                    dependOnType.Hide();
+                    DependOnTypeButton.Hide();
                     break;
                 case "Photographers":
                     DependOnTypeButton.Text = "change Camera";
+                    dependOnType.Hide();
+                    DependOnTypeButton.Hide();
                     break;
             }
         }

@@ -91,10 +91,10 @@ namespace WindowsFormsApp2
                             button2.Enabled = true;
                             button3.Text = "Delete User";
                         break;
-                    case "Photographers":
+                    case "Photographer":
                         label8.Text = "Photographers";
                         button2.Text = "Update info";
-                            button2.Enabled = true;
+                           
                             button3.Text = "Delete User";
                         break;
                     }

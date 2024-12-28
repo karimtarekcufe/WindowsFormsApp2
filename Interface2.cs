@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using WindowsFormsApp2;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
@@ -532,17 +533,18 @@ namespace DBapplication
         }
 
         //AbdelRahman Functions
-        public int checkpasssword(string username, string password)
+        public bool checkpassword(string username, string password)
         {
-            string query = $"SELECT count(Password) FROM UserData WHERE Password = '{password}' and username='{username}'";
-            return (int)dbMan.ExecuteScalar(query);
+            string query = $"SELECT Password FROM UserData WHERE  username='{username}'";
+
+            return Password.VerifyPassword(password, dbMan.ExecuteReader(query).Rows[0][0].ToString());
 
         }
 
 
-        public DataTable selectroles(string username, string password)
+        public DataTable selectroles(string username)
         {
-            string query = $"SELECT Role,username FROM UserData WHERE Password = '{password}' and username='{username}'";
+            string query = $"SELECT Role,username FROM UserData WHERE  username='{username}'";
             return dbMan.ExecuteReader(query);
 
         }

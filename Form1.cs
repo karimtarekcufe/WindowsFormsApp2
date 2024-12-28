@@ -27,7 +27,8 @@ namespace WindowsFormsApp2
             // Initialize the timer
             hideButtonTimer = new System.Windows.Forms.Timer(); 
             hideButtonTimer.Interval = 5000;  
-            hideButtonTimer.Tick += HideButtonTimer_Tick; 
+            hideButtonTimer.Tick += HideButtonTimer_Tick;
+          
         }
 
         public Controller GetController()
@@ -64,8 +65,9 @@ namespace WindowsFormsApp2
                     int result = controller1.checkusername(textBox1.Text);
                     if (result != 0)
                     {
-                        int res = controller1.checkpasssword(textBox1.Text, textBox2.Text);
-                        if (res == 0)
+
+                        bool res = controller1.checkpassword(textBox1.Text, textBox2.Text);
+                        if (res == false)
                         {
                             MessageBox.Show("Username does not match password");
 
@@ -78,7 +80,7 @@ namespace WindowsFormsApp2
                         else
                         {
                             MessageBox.Show("Login successful!");
-                            DataTable dt = controller1.selectroles(textBox1.Text, textBox2.Text);
+                            DataTable dt = controller1.selectroles(textBox1.Text);
                             if (dt.Rows[0][0] != null)
                             { 
                                 string role = Convert.ToString(dt.Rows[0][0]);
