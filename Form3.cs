@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsFormsApp2
 {
@@ -48,6 +49,9 @@ namespace WindowsFormsApp2
             {
                
                 case "Admin":
+                    button2.Visible = false;
+                    button3.Visible = false;
+                    button1.Text = "Admin Page";
                     break;
                 case "Customer":
                     button1.Text = "make request";
@@ -156,6 +160,11 @@ namespace WindowsFormsApp2
             {
                 AddMenuOption f = new AddMenuOption(this, controller1, int.Parse(id));
                 f.Show();
+                this.Hide();
+            }
+            if ((temprole == "Admin")){
+                Admin f1 = new Admin(this);
+                f1.Show();
                 this.Hide();
             }
 
@@ -307,6 +316,59 @@ namespace WindowsFormsApp2
         private void Form3_FormClosing(object sender, FormClosingEventArgs e)
         {
             f.Show();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBox1.Text))
+            {
+                MessageBox.Show("You must enter a password!");
+                return;
+            }
+            string hash = Password.HashPassword(textBox1.Text);
+            if (controller1.checkpassword(username, textBox1.Text))
+            {
+                MessageBox.Show("Error , Password Cannot be the same as old!", "Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            int result = controller1.updatePassword(username, hash);
+            if (result == 0)
+            {
+                MessageBox.Show("Error!", "Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else {
+                MessageBox.Show("Password Changed!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBox2.Text) && string.IsNullOrEmpty(textBox3.Text))
+            {
+                MessageBox.Show("Username and password must be entered");
+                return;
+            }
+            else if (string.IsNullOrEmpty(textBox2.Text))
+            {
+                MessageBox.Show("Username must be entered!");
+                return;
+            }
+            else if (string.IsNullOrEmpty(textBox3.Text))
+            {
+                MessageBox.Show("You must enter a password!");
+                return;
+            }
+           if ( controller1.CheckExistance(textBox2.Text) == 0)
+            {
+                if (controller1.InsertUserData(textBox2.Text, Password.HashPassword(textBox3.Text), "Admin")>0)
+                {
+                    MessageBox.Show("Admin added!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+           else
+            {
+                MessageBox.Show("UserName already taken" , "Failure" , MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

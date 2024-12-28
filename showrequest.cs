@@ -17,7 +17,7 @@ namespace WindowsFormsApp2
         public showrequest(Form3 f,int id)
         {
             cid = id;
-            f.Hide();
+      
             InitializeComponent();
             cont1 = new Controller();
             

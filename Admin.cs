@@ -14,13 +14,13 @@ namespace WindowsFormsApp2
 {
     public partial class Admin : Form
     {
-        Form1 f;
+        Form3 f;
         string username;
         Controller controloj;
-        public Admin(Form1 f)
+        public Admin(Form3 f)
         {
             this .f = f;
-            controloj = f.GetController();
+            controloj = new Controller();
             InitializeComponent();
             this.FormClosing += adminForm_closing;
         }
