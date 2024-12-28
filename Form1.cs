@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
 using System.Timers;  // For the advanced Timer (if needed)
-
+using WindowsFormsApp2;
 namespace WindowsFormsApp2
 {
     public partial class Form1 : Form
@@ -24,11 +24,16 @@ namespace WindowsFormsApp2
         {
             controller1 = new Controller();
             InitializeComponent();
-
             // Initialize the timer
             hideButtonTimer = new System.Windows.Forms.Timer(); 
             hideButtonTimer.Interval = 5000;  
-            hideButtonTimer.Tick += HideButtonTimer_Tick; 
+            hideButtonTimer.Tick += HideButtonTimer_Tick;
+          
+        }
+
+        public Controller GetController()
+        {
+            return controller1;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -60,8 +65,9 @@ namespace WindowsFormsApp2
                     int result = controller1.checkusername(textBox1.Text);
                     if (result != 0)
                     {
-                        int res = controller1.checkpasssword(textBox1.Text, textBox2.Text);
-                        if (res == 0)
+
+                        bool res = controller1.checkpassword(textBox1.Text, textBox2.Text);
+                        if (res == false)
                         {
                             MessageBox.Show("Username does not match password");
 
@@ -74,13 +80,38 @@ namespace WindowsFormsApp2
                         else
                         {
                             MessageBox.Show("Login successful!");
-                            DataTable dt = controller1.selectroles(textBox1.Text, textBox2.Text);
+                            DataTable dt = controller1.selectroles(textBox1.Text);
                             if (dt.Rows[0][0] != null)
-                            {
+                            { 
                                 string role = Convert.ToString(dt.Rows[0][0]);
                                 string username = Convert.ToString(dt.Rows[0][1]);
-                                Form3 form3 = new Form3(this, role, username);
-                                form3.Show();
+                                if (role != "Admin")
+                                {
+                                    if (role == "Entertainer")
+                                    {
+                                        DataTable dt2 = controller1.getID(textBox1.Text);
+                                        int id = Convert.ToInt32(dt2.Rows[0][0]);
+//<<<<<<< HEAD
+                                        Form3 form3 = new Form3(this, role, username);
+
+//>>>>>>> omar finalpppp
+                                        form3.Show();
+                                    }
+                                    else
+                                    {
+//<<<<<<< HEAD
+                                        Form3 form3 = new Form3(this, role, username);
+//=======
+//>>>>>>> omar finalpppp
+                                        form3.Show();
+                                    }
+                                }
+                                else
+                                {
+                                    Admin f1 = new Admin(this );
+                                    f1.Show();
+                                    this.Hide();
+                                }
                             }
 
                             // Reset failed attempts on successful login

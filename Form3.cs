@@ -15,16 +15,25 @@ namespace WindowsFormsApp2
 {
     public partial class Form3 : Form
     {
+        string id;
+        Form1 f;
         string temprole;
         string username;
         Controller controller1;
+       
 
-        public Form3(Form f ,string role,string name)
+        public Form3(Form1 f ,string role,string name)
         {
             controller1 = new Controller();
             temprole = role;
             username = name;
+            this.f = f;
             f.Hide();
+           
+           
+           
+            id = controller1.getID(username).Rows[0][0].ToString();
+          
             InitializeComponent();
             label5.Text = role;
             label7.Text = name;
@@ -32,6 +41,9 @@ namespace WindowsFormsApp2
             button5.Visible = false;
             button6.Visible = false;
             button7.Visible = true;
+            label6.Visible = false;
+            label8.Visible = false;
+            this.FormClosing += Form3_FormClosing;
             switch (temprole)
             {
                
@@ -62,13 +74,47 @@ namespace WindowsFormsApp2
                     }
                     break;
                 case "Caterer":
+                    button1.Text = "Add Menu Option";
+                    button2.Text = "View Requests";
+                    button3.Text = "change Price";
                     break;
                 case "Entertainer":
+                    string type = controller1.EntType(int.Parse(id));
+                    button1.Text = "view Requests";
+                    label6.Show();
+                    label8.Show();
+                    button3.Hide();
+                    switch (type)
+                    {
+                    case "Musician":
+                        label8.Text = "Musician";
+                        button2.Text = "Update info";
+                            button2.Enabled = true;
+                        button3.Text = "Delete User";
+                        break;
+                    case "Florist":
+                        label8.Text = "Florist";
+                        button2.Text = "Update info";
+                            button2.Enabled = true;
+                            button3.Text = "Delete User";
+                        break;
+                    case "Photographer":
+                        label8.Text = "Photographers";
+                        button2.Text = "Update info";
+                           
+                            button3.Text = "Delete User";
+                        break;
+                    }
                     break;
 
 
 
             }
+        }
+
+        public Controller GetController()
+        {
+            return controller1;
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -100,6 +146,18 @@ namespace WindowsFormsApp2
                 makerequest.Show();
 
             }
+            if (temprole == "Entertainer")
+            {
+                EntRequests f = new EntRequests(this, int.Parse(id));
+                f.Show();
+                this.Hide();
+            }
+            if (temprole == "Caterer")
+            {
+                AddMenuOption f = new AddMenuOption(this, controller1, int.Parse(id));
+                f.Show();
+                this.Hide();
+            }
 
         }
 
@@ -117,7 +175,18 @@ namespace WindowsFormsApp2
                 srequest.Show();
 
             }
+            if (temprole == "Entertainer")
+            {
+                UpdateInfoEnt f = new UpdateInfoEnt(this, int.Parse(id), label8.Text);
+                f.Show();
+            }
 
+            if (temprole == "Caterer")
+            {
+                ViewRequestCat f = new ViewRequestCat(this, controller1, int.Parse(id));
+                f.Show();
+                this.Hide();
+            }
         }
 
         
@@ -139,6 +208,40 @@ namespace WindowsFormsApp2
                 addguest addguest = new addguest(this, cid);
                 addguest.Show();
 
+            }
+            if(temprole == "Entertainer")
+            {
+                DataTable dt = controller1.getDateEnt(int.Parse(id));
+                //DataTable dt2 = controlobj.getStatusEnt(id);
+                bool cannotDel = false;
+                DateTime currentDate = DateTime.Now;
+                if (dt == null)
+                {
+                    return;
+                }
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    if (currentDate > (DateTime)(dt.Rows[i][0]))
+                    {
+                        cannotDel = true;
+                    }
+                }
+                if (cannotDel)
+                {
+                    MessageBox.Show("Cannot delete Enterainer till he finishes all request");
+                }
+                else
+                {
+                    DeleteEnt f2 = new DeleteEnt(this, int.Parse(id), label5.Text);
+                    f2.Show();
+                    this.Hide();
+                }
+            }
+            if (temprole == "Caterer")
+            {
+                MenuPriceC f = new MenuPriceC(this, controller1, int.Parse(id));
+                f.Show();
+                this.Hide();
             }
         }
 
@@ -200,6 +303,10 @@ namespace WindowsFormsApp2
 
             }
 
+        }
+        private void Form3_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            f.Show();
         }
     }
 }

@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddMenuOption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddMenuOption.Designer.cs">
+      <DependentUpon>AddMenuOption.cs</DependentUpon>
+    </Compile>
     <Compile Include="cancelrequest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,19 +76,43 @@
     <Compile Include="Edit_Venue.Designer.cs">
       <DependentUpon>Edit_Venue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Admin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin.Designer.cs">
+      <DependentUpon>Admin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeleteEnt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeleteEnt.Designer.cs">
+      <DependentUpon>DeleteEnt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntertainersStatics.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EntertainersStatics.Designer.cs">
+      <DependentUpon>EntertainersStatics.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntRequests.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EntRequests.Designer.cs">
+      <DependentUpon>EntRequests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="DBMan.cs" />
     <Compile Include="Form2.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
-    <Compile Include="DBMan.cs" />
     <Compile Include="Form3.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +137,13 @@
     <Compile Include="modifyrequest.Designer.cs">
       <DependentUpon>modifyrequest.cs</DependentUpon>
     </Compile>
+    <Compile Include="PasswordHasher.cs" />
+    <Compile Include="MenuPriceC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenuPriceC.Designer.cs">
+      <DependentUpon>MenuPriceC.cs</DependentUpon>
+    </Compile>
     <Compile Include="showguest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +162,12 @@
     <Compile Include="makerequest.Designer.cs">
       <DependentUpon>makerequest.cs</DependentUpon>
     </Compile>
+    <Compile Include="HallProvidersAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HallProvidersAdmin.Designer.cs">
+      <DependentUpon>HallProvidersAdmin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interface2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -134,12 +177,21 @@
     <Compile Include="Remove_Venue.Designer.cs">
       <DependentUpon>Remove_Venue.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewRequestCat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewRequestCat.Designer.cs">
+      <DependentUpon>ViewRequestCat.cs</DependentUpon>
+    </Compile>
     <Compile Include="View_Booking.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View_Booking.Designer.cs">
       <DependentUpon>View_Booking.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AddMenuOption.resx">
+      <DependentUpon>AddMenuOption.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Add_Venue.resx">
       <DependentUpon>Add_Venue.cs</DependentUpon>
     </EmbeddedResource>
@@ -155,6 +207,36 @@
     <EmbeddedResource Include="Edit_Venue.resx">
       <DependentUpon>Edit_Venue.cs</DependentUpon>
     </EmbeddedResource>
+    <Compile Include="TransportationAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransportationAdmin.Designer.cs">
+      <DependentUpon>TransportationAdmin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UpdateInfoEnt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateInfoEnt.Designer.cs">
+      <DependentUpon>UpdateInfoEnt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewRequestAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewRequestAdmin.Designer.cs">
+      <DependentUpon>ViewRequestAdmin.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Admin.resx">
+      <DependentUpon>Admin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteEnt.resx">
+      <DependentUpon>DeleteEnt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EntertainersStatics.resx">
+      <DependentUpon>EntertainersStatics.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EntRequests.resx">
+      <DependentUpon>EntRequests.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -163,6 +245,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuPriceC.resx">
+      <DependentUpon>MenuPriceC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form4.resx">
       <DependentUpon>Form4.cs</DependentUpon>
@@ -179,6 +264,9 @@
     <EmbeddedResource Include="makerequest.resx">
       <DependentUpon>makerequest.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="HallProvidersAdmin.resx">
+      <DependentUpon>HallProvidersAdmin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -191,8 +279,20 @@
     <EmbeddedResource Include="Remove_Venue.resx">
       <DependentUpon>Remove_Venue.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ViewRequestCat.resx">
+      <DependentUpon>ViewRequestCat.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View_Booking.resx">
       <DependentUpon>View_Booking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransportationAdmin.resx">
+      <DependentUpon>TransportationAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdateInfoEnt.resx">
+      <DependentUpon>UpdateInfoEnt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewRequestAdmin.resx">
+      <DependentUpon>ViewRequestAdmin.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
